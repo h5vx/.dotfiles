@@ -1,0 +1,30 @@
+{
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "window.zoomLevel": 0,
+    "breadcrumbs.enabled": true,
+
+    // "go.buildOnSave": true,
+    // "go.lintOnSave": true,
+    // "go.vetOnSave": true,
+    "go.buildFlags": [],
+
+    // Get rid of "exported thing must be commented" notice
+    "go.lintFlags": ["-min_confidence=1.1"],
+
+    "go.vetFlags": [],
+    "go.useCodeSnippetsOnFunctionSuggest": false,
+    // "go.formatOnSave": false,
+    "go.formatTool": "goreturns",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Material Theme Darker",
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+
+    "python.venvFolders": [
+        "venv",
+        "envs",
+        ".pyenv",
+        ".direnv"
+    ]
+}

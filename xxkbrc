@@ -1,0 +1,15 @@
+XXkb.mainwindow.enable: yes
+XXkb.mainwindow.label.enable: yes
+XXkb.mainwindow.type: tray
+XXkb.mainwindow.appicon: no
+XXkb.mainwindow.geometry: 15x15+0+0
+XXkb.mainwindow.label.background: black
+XXkb.mainwindow.label.foreground: #cc88cc
+! XXkb.mainwindow.label.foreground: #78A4FF
+XXkb.mainwindow.label.font: -*-terminus-bold-r-*-*-13-*-*-*-*-*-*-*
+XXkb.mainwindow.label.text.1: EN
+XXkb.mainwindow.label.text.2: RU
+XXkb.controls.add_when_start: no
+XXkb.button.enable: no
+XXkb.controls.add_when_change: no
+XXkb.controls.focusout: no
