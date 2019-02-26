@@ -34,6 +34,12 @@ theme.titlebar_bg_normal                        = "#191919"
 theme.titlebar_bg_focus                         = "#262626"
 theme.menu_height                               = 16
 theme.menu_width                                = 130
+-- It's notification itself, not an icon
+-- theme.notification_height                       = 64
+-- theme.notification_width                        = 64
+theme.notification_icon_height                  = 64
+theme.notification_icon_width                   = 64
+
 theme.tasklist_disable_icon                     = true
 theme.awesome_icon                              = theme.dir .."/icons/awesome.png"
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
