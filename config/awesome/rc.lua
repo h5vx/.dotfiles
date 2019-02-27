@@ -61,9 +61,10 @@ run_once({
 --  "setxkbmap -layout us,ru -option grp:alt_shift_toggle",
 --  "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1",
 --  "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
-
---  "tilda", 
-    "xxkb"
+    "compton",
+    "tilda", 
+    "xxkb",
+    "nm-applet"
 })
 
 -- This function implements the XDG autostart specification
@@ -103,7 +104,7 @@ local browser      = "chromium"
 local scrlocker    = "i3lock -c00000"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { "1", "2", "3", "4", "5" }
+awful.util.tagnames = { "", "", "", "﬏", "", "" }
 awful.layout.layouts = {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
@@ -195,6 +196,9 @@ lain.layout.cascade.tile.ncol          = 2
 beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme))
 -- }}}
 
+beautiful.notification_icon_size = 32
+-- beautiful.notification_icon_width = 64
+
 -- {{{ Menu
 local myawesomemenu = {
     { "hotkeys", function() return false, hotkeys_popup.show_help end },
@@ -246,7 +250,7 @@ root.buttons(my_table.join(
 globalkeys = my_table.join(
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ altkey }, "p", function() os.execute("screenshot") end,
+    awful.key({ altkey }, "p", function() os.execute("flameshot gui") end,
               {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
@@ -370,9 +374,9 @@ globalkeys = my_table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
-    awful.key({ altkey, "Shift"   }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+    awful.key({ modkey }, "]",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
-    awful.key({ altkey, "Shift"   }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+    awful.key({ modkey }, "[",     function () awful.tag.incmwfact(-0.05)          end,
               {description = "decrease master width factor", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
               {description = "increase the number of master clients", group = "layout"}),
@@ -476,7 +480,7 @@ globalkeys = my_table.join(
         {description = "cmus play/pause", group = "widgets"}),
 
     -- MPD control
-    --[[
+    --[-[
     awful.key({ altkey, "Control" }, "Up",
         function ()
             os.execute("mpc toggle")
