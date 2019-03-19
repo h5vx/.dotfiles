@@ -1,0 +1,6 @@
+:nmap H :action Back<CR>
+:nmap L :action Forward<CR>
+:nmap K :action PreviousTab<CR>
+:nmap J :action NextTab<CR>
+:nmap ZC :action CloseAllUnpinnedEditors<CR>
+
