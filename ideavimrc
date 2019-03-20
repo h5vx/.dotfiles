@@ -3,4 +3,5 @@
 :nmap K :action PreviousTab<CR>
 :nmap J :action NextTab<CR>
 :nmap ZC :action CloseAllUnpinnedEditors<CR>
+:set ignorecase
 
