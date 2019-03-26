@@ -282,15 +282,18 @@ tmux_conf_copy_to_os_clipboard=false
 
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
-#set -g status-keys vi
-#set -g mode-keys vi
+set -g status-keys vi
+set -g mode-keys vi
 
-# replace C-b by C-a instead of using both prefixes
-# set -gu prefix2
-# unbind C-a
-# unbind C-b
-# set -g prefix C-a
-# bind C-a send-prefix
+# replace C-a by C-b instead of using both prefixes
+set -gu prefix2
+unbind C-a
+unbind C-b
+set -g prefix C-b
+bind C-b send-prefix
 
 # move status line to top
 #set -g status-position top
+
+# toggle copy-mode by <prefix> C-u
+bind -T prefix C-u copy-mode -u
