@@ -5,10 +5,17 @@ function fish_prompt
     and echo (set_color red)"#"
 
     # Main
+    if set -q VIRTUAL_ENV
+        echo -n -s (set_color -b blue white) "(" (basename "$VIRTUAL_ENV") ")" (set_color normal) " "
+    end
+
     set arr '❯'
     if test "$TERM" = "linux"
 	   set arr '>'
     end
+    # if set -q VIRTUAL_ENV
+    #    echo -n -s (set_color -b blue white) "(" (basename "$VIRTUAL_ENV") ")" (set_color normal) " "
+    # end
     echo -n (set_color cyan)(prompt_pwd) (set_color red)"$arr"(set_color yellow)"$arr"(set_color green)"$arr "
 end
 
