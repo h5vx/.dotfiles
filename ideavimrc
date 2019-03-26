@@ -3,5 +3,7 @@
 :nmap K :action PreviousTab<CR>
 :nmap J :action NextTab<CR>
 :nmap ZC :action CloseAllUnpinnedEditors<CR>
+" Insert after word
+:nmap I wi
 :set ignorecase
 
