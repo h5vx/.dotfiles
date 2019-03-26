@@ -16,8 +16,8 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/copland"
 theme.wallpaper                                 = theme.dir .. "/wall.png"
-theme.font                                      = "Misc Tamsyn 10.5"
---theme.font                                      = "Fira Code 11"
+-- theme.font                                      = "Fura Code 11"
+theme.font                                      = "Varela Round 11"
 theme.fg_normal                                 = "#BBBBBB"
 theme.fg_focus                                  = "#78A4FF"
 theme.bg_normal                                 = "#111111"
@@ -96,15 +96,15 @@ local green  = "#8FEB8F"
 
 -- Textclock
 --os.setlocale(os.getenv("LANG")) -- to localize the clock
-local mytextclock = wibox.widget.textclock("<span font='Misc Tamsyn 5'> </span>%H:%M ")
+local mytextclock = wibox.widget.textclock("<span font='Misc Tamsyn 5'> </span>%d %a %H:%M ")
 -- mytextclock.font = theme.font
-mytextclock.font = 'Consolas Bold 12'
+mytextclock.font = 'Varela Round Bold 10.5'
 
 -- Calendar
 theme.cal = lain.widget.cal({
     attach_to = { mytextclock },
     notification_preset = {
-        font = "Misc Tamsyn 11",
+        font = "Monospace 10",
         fg   = theme.fg_normal,
         bg   = theme.bg_normal
     }
@@ -156,16 +156,18 @@ theme.mpd = lain.widget.mpd({
 })
 
 -- MEM
+-- local mem_font = theme.font
+local mem_font = "Misc Tamsyn 10.5"
 local memicon = wibox.widget.imagebox(theme.mem)
 local memory = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.fontfg(theme.font, theme.border_focus, mem_now.used .. "M "))
+        widget:set_markup(markup.fontfg(mem_font, theme.border_focus, mem_now.used .. "M "))
     end
 })
 
 local swap = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.fontfg(theme.font, '#c0B670', mem_now.swapused .. "M "))
+        widget:set_markup(markup.fontfg(mem_font, '#c0B670', mem_now.swapused .. "M "))
     end
 })
 
@@ -304,7 +306,7 @@ local first     = wibox.widget.textbox(markup.font("Misc Tamsyn 3", " "))
 local spr       = wibox.widget.textbox(' ')
 local small_spr = wibox.widget.textbox(markup.font("Misc Tamsyn 4", " "))
 local bar_spr   = wibox.widget.textbox(markup.font("Misc Tamsyn 3", " ") .. markup.fontfg(theme.font, "#777777", "|") .. markup.font("Misc Tamsyn 5", " "))
-local swap_label = wibox.widget.textbox(markup.font(theme.font, "SWP "))
+local swap_label = wibox.widget.textbox(markup.font(mem_font, "/ "))
 
 -- Eminent-like task filtering
 local orig_filter = awful.widget.taglist.filter.all
@@ -381,10 +383,10 @@ function theme.at_screen_connect(s)
             swap,
             --fsicon,
             --fswidget,
-            bar_spr,
+            -- bar_spr,
             volicon,
             volumewidget,
-            bar_spr,
+            -- bar_spr,
             mytextclock,
         },
     }

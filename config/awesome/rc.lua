@@ -52,7 +52,7 @@ end
 -- This function will run once every time Awesome is started
 local function run_once(cmd_arr)
     for _, cmd in ipairs(cmd_arr) do
-        awful.spawn .with_shell(string.format("pgrep -u $USER -x '%s' > /dev/null || (%s)", cmd, cmd))
+        awful.spawn.with_shell(string.format("pgrep -u $USER -x '%s' > /dev/null || (%s)", cmd, cmd))
     end
 end
 
@@ -101,7 +101,7 @@ local terminal     = os.getenv("TERMINAL") or "kitty"
 local editor       = os.getenv("EDITOR") or "vim"
 local gui_editor   = "subl3"
 local browser      = "chromium"
-local scrlocker    = "i3lock -c00000"
+local scrlocker    = "i3lock -c000000"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "", "", "", "﬏", "", "" }
@@ -143,8 +143,8 @@ awful.util.taglist_buttons = my_table.join(
             client.focus:toggle_tag(t)
         end
     end),
-    awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
-    awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
+    awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
+    awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end)
 )
 
 awful.util.tasklist_buttons = my_table.join(
@@ -197,7 +197,6 @@ beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv
 -- }}}
 
 beautiful.notification_icon_size = 32
--- beautiful.notification_icon_width = 64
 
 -- {{{ Menu
 local myawesomemenu = {
