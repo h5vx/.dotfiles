@@ -249,7 +249,7 @@ root.buttons(my_table.join(
 globalkeys = my_table.join(
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ altkey }, "p", function() os.execute("flameshot gui") end,
+    awful.key({ }, "Print", function() os.execute("flameshot gui") end,
               {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
@@ -420,38 +420,26 @@ globalkeys = my_table.join(
               {description = "-10%", group = "hotkeys"}),
 
     -- ALSA volume control
-    awful.key({ altkey }, "Up",
+    awful.key({ modkey }, "=",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
+            os.execute(string.format("amixer -q set %s 3%%+", beautiful.volume.channel))
             beautiful.volume.update()
         end,
         {description = "volume up", group = "hotkeys"}),
-    awful.key({ altkey }, "Down",
+    awful.key({ modkey }, "-",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
+            os.execute(string.format("amixer -q set %s 3%%-", beautiful.volume.channel))
             beautiful.volume.update()
         end,
         {description = "volume down", group = "hotkeys"}),
-    awful.key({ altkey }, "m",
+    awful.key({ modkey }, "v",
         function ()
             os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
             beautiful.volume.update()
         end,
         {description = "toggle mute", group = "hotkeys"}),
-    awful.key({ altkey, "Control" }, "m",
-        function ()
-            os.execute(string.format("amixer -q set %s 100%%", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume 100%", group = "hotkeys"}),
-    awful.key({ altkey, "Control" }, "0",
-        function ()
-            os.execute(string.format("amixer -q set %s 0%%", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume 0%", group = "hotkeys"}),
 
-    -- CMUS control
+    --[[ CMUS control
     awful.key({ }, "XF86AudioNext",
         function ()
             os.execute("cmus-remote --next")
@@ -477,9 +465,38 @@ globalkeys = my_table.join(
             os.execute("cmus-remote --pause")
         end,
         {description = "cmus play/pause", group = "widgets"}),
+    --]]
+
+    --[-[ CMUS control without XF86- keys
+    awful.key({ modkey }, "F12",
+        function ()
+            os.execute("cmus-remote --next")
+        end,
+        {description = "cmus next", group = "widgets"}),
+    awful.key({ modkey }, "F10",
+        function ()
+            os.execute("cmus-remote --prev")
+        end,
+        {description = "cmus previous", group = "widgets"}),
+    awful.key({ modkey }, "F9",
+        function ()
+            os.execute("cmus-remote --seek +5s")
+        end,
+        {description = "cmus seek +5s", group = "widgets"}),
+    awful.key({ modkey }, "F8",
+        function ()
+            os.execute("cmus-remote --seek -5s")
+        end,
+        {description = "cmus seek -5s", group = "widgets"}),
+    awful.key({ modkey }, "F11",
+        function ()
+            os.execute("cmus-remote --pause")
+        end,
+        {description = "cmus play/pause", group = "widgets"}),
+    --]]
 
     -- MPD control
-    --[-[
+    --[[
     awful.key({ altkey, "Control" }, "Up",
         function ()
             os.execute("mpc toggle")
@@ -566,12 +583,19 @@ globalkeys = my_table.join(
                     history_path = awful.util.get_cache_dir() .. "/history_eval"
                   }
               end,
-              {description = "lua execute prompt", group = "awesome"})
+              {description = "lua execute prompt", group = "awesome"}),
+    --]]
+
+    --[-[ Window transparency control (needs transset-df)
+        awful.key({ modkey, "Control" }, "-", function () os.execute('transset-df -a --dec 0.1') end,
+          {description = "window transparency +10%", group = "client"}),
+        awful.key({ modkey, "Control" }, "=", function () os.execute('transset-df -a --inc 0.1') end,
+          {description = "window transparency -10%", group = "client"})
     --]]
 )
 
 clientkeys = my_table.join(
-    awful.key({ altkey, "Shift"   }, "m",      lain.util.magnify_client,
+    awful.key({ modkey, "Shift"   }, "m",      lain.util.magnify_client,
               {description = "magnify client", group = "client"}),
     awful.key({ modkey,           }, "f",
         function (c)
