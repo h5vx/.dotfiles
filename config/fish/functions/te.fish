@@ -1,3 +1,3 @@
-function tr -d "Translate to Russian"
+function te -d "Translate to English"
 	trans -to en -from ru "$argv"
 end 
