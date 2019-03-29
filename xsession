@@ -7,4 +7,6 @@ case "${DESKTOP_SESSION-}" in
 		;;
 esac
 
+eval `ssh-agent -s`; ssh-add < /dev/null
+
 exec $DESKTOP_SESSION
