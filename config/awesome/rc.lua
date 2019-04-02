@@ -104,7 +104,7 @@ local browser      = "chromium"
 local scrlocker    = "i3lock -c000000"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { "", "", "", "﬏", "", "" }
+awful.util.tagnames = { "🌎", "📟", "📝", "🌀", "📕", "🐙" }
 awful.layout.layouts = {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
