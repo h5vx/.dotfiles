@@ -1,9 +1,34 @@
-:nmap H :action Back<CR>
-:nmap L :action Forward<CR>
-:nmap K :action PreviousTab<CR>
-:nmap J :action NextTab<CR>
-:nmap ZC :action CloseAllUnpinnedEditors<CR>
-" Insert after word
-:nmap I wi
+" Toggle case-insensitive search
 :set ignorecase
+" Toggle search highlighting
+:set hlsearch
 
+" Navigate by history, like in web browser
+:nnoremap H :action Back<CR>
+:nnoremap L :action Forward<CR>
+
+" Navigate tabs
+:nnoremap K :action PreviousTab<CR>
+:nnoremap J :action NextTab<CR>
+
+" Navigate metgods
+:nnoremap U :action MethodUp<CR>
+:nnoremap D :action MethodDown<CR>
+
+" Tab actions
+:nnoremap ZC :action CloseAllUnpinnedEditors<CR>
+:nnoremap ZQ :q<CR>
+:nnoremap ZR :action ReopenClosedTab<cr>
+
+" Insert after word
+:nnoremap I wi
+
+" Move line
+:nnoremap <A-j> :action MoveLineDown<CR>
+:nnoremap <A-k> :action MoveLineUp<CR>
+:inoremap <A-j> <Esc>:action MoveLineDown<CR>a
+:inoremap <A-k> <Esc>:action MoveLineUp<CR>a
+:vnoremap <A-j> :action MoveLineDown<CR>
+:vnoremap <A-k> :action MoveLineUp<CR>
+
+:inoremap kj <Esc>
