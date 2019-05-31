@@ -87,4 +87,9 @@ endif
 inoremap <C-U> <C-G>u<C-U>
 " }}}
 
+
+set tabstop=4
+set shiftwidth=4
+
 inoremap kj <Esc>
+
