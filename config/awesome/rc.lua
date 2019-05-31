@@ -321,7 +321,7 @@ globalkeys = my_table.join(
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
-              {description = "swap with previous client b yindex", group = "client"}),
+              {description = "swap with previous client by index", group = "client"}),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
@@ -468,32 +468,32 @@ globalkeys = my_table.join(
         {description = "cmus play/pause", group = "widgets"}),
     --]]
 
-    --[-[ CMUS control without XF86- keys
+    --[-[ Player control (MPRIS) without XF86- keys
     awful.key({ modkey }, "F12",
         function ()
-            os.execute("cmus-remote --next")
+            os.execute("playerctl next")
         end,
-        {description = "cmus next", group = "widgets"}),
+        {description = "next track", group = "widgets"}),
     awful.key({ modkey }, "F10",
         function ()
-            os.execute("cmus-remote --prev")
+            os.execute("playerctl previous")
         end,
-        {description = "cmus previous", group = "widgets"}),
+        {description = "previous track", group = "widgets"}),
     awful.key({ modkey }, "F9",
         function ()
-            os.execute("cmus-remote --seek +5s")
+            os.execute("playerctl position 5+")
         end,
-        {description = "cmus seek +5s", group = "widgets"}),
+        {description = "seek +5s", group = "widgets"}),
     awful.key({ modkey }, "F8",
         function ()
-            os.execute("cmus-remote --seek -5s")
+            os.execute("playerctl position -5")
         end,
-        {description = "cmus seek -5s", group = "widgets"}),
+        {description = "seek -5s", group = "widgets"}),
     awful.key({ modkey }, "F11",
         function ()
-            os.execute("cmus-remote --pause")
+            os.execute("playerctl play-pause")
         end,
-        {description = "cmus play/pause", group = "widgets"}),
+        {description = "play/pause", group = "widgets"}),
     --]]
 
     -- MPD control
@@ -544,11 +544,12 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "v", function () awful.spawn.with_shell("xsel -b | xsel") end,
               {description = "copy gtk to terminal", group = "hotkeys"}),
 
-    -- User programs
+    --[[ User programs
     awful.key({ modkey }, "q", function () awful.spawn(browser) end,
               {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(guieditor) end,
               {description = "run gui editor", group = "launcher"}),
+    --]]
 
     -- Default
     --[[ Menubar 
@@ -572,6 +573,8 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "p", function () os.execute('rofi -show drun -show-icons') end,
       {description = "launch application", group = "launcher"}),
     awful.key({ modkey }, "w", function () os.execute('rofi -show window') end,
+      {description = "switch windows", group = "launcher"}), 
+    awful.key({ modkey }, "u", function () os.execute('rofimoji') end,
       {description = "switch windows", group = "launcher"}),
     --]]
 
