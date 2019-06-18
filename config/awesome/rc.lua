@@ -256,6 +256,10 @@ globalkeys = my_table.join(
     awful.key({ altkey, "Control" }, "l", function () os.execute(scrlocker) end,
               {description = "lock screen", group = "hotkeys"}),
 
+    -- lock to greeter
+    awful.key({ modkey, "Control" }, "l", function() os.execute("dm-tool switch-to-greeter") end,
+              {description = "switch user", group = "hotkeys"}),
+
     -- Hotkeys
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description = "show help", group="awesome"}),
@@ -440,32 +444,32 @@ globalkeys = my_table.join(
         end,
         {description = "toggle mute", group = "hotkeys"}),
 
-    --[[ CMUS control
+    --[-[ Player control (MPRIS), XF86- keys
     awful.key({ }, "XF86AudioNext",
         function ()
-            os.execute("cmus-remote --next")
+            os.execute("playerctl next")
         end,
-        {description = "cmus next", group = "widgets"}),
+        {description = "next track", group = "widgets"}),
     awful.key({ }, "XF86AudioPrev",
         function ()
-            os.execute("cmus-remote --prev")
+            os.execute("playerctl previous")
         end,
-        {description = "cmus previous", group = "widgets"}),
+        {description = "previous track", group = "widgets"}),
     awful.key({ "Control" }, "XF86AudioNext",
         function ()
-            os.execute("cmus-remote --seek +5s")
+            os.execute("playerctl position 5+")
         end,
-        {description = "cmus seek +5s", group = "widgets"}),
+        {description = "seek +5s", group = "widgets"}),
     awful.key({ "Control" }, "XF86AudioPrev",
         function ()
-            os.execute("cmus-remote --seek -5s")
+            os.execute("playerctl position -5")
         end,
-        {description = "cmus seek -5s", group = "widgets"}),
+        {description = "seek -5s", group = "widgets"}),
     awful.key({ }, "XF86AudioPlay",
         function ()
-            os.execute("cmus-remote --pause")
+            os.execute("playerctl play-pause")
         end,
-        {description = "cmus play/pause", group = "widgets"}),
+        {description = "play/pause", group = "widgets"}),
     --]]
 
     --[-[ Player control (MPRIS) without XF86- keys
