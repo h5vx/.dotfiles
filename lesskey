@@ -1,4 +1,0 @@
-#env
-LESSHISTSIZE = 0
-LESS = -i -R
-
