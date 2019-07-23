@@ -18,7 +18,7 @@
 " Tab actions
 :nnoremap ZC :action CloseAllUnpinnedEditors<CR>
 :nnoremap ZQ :q<CR>
-:nnoremap ZR :action ReopenClosedTab<cr>
+:nnoremap ZR :action ReopenClosedTab<CR>
 
 " Insert after word
 :nnoremap I wi
@@ -32,3 +32,7 @@
 :vnoremap <A-k> :action MoveLineUp<CR>
 
 :inoremap kj <Esc>
+
+" Next/Prev token with screen centering
+:nnoremap * *zz
+:nnoremap # #zz
