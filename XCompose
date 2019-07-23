@@ -1,2 +1,4 @@
+include "/usr/share/X11/locale/en_US.UTF-8/Compose"
+
 <Multi_key> <o> <k> 			: "✔"   U2714 # Heavy Check Mark
 <Multi_key> <o> <x> 			: "✗"   U2717 # Ballot X
