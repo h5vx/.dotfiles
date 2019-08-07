@@ -2,3 +2,6 @@ include "/usr/share/X11/locale/en_US.UTF-8/Compose"
 
 <Multi_key> <o> <k> 			: "✔"   U2714 # Heavy Check Mark
 <Multi_key> <o> <x> 			: "✗"   U2717 # Ballot X
+<Multi_key> <slash> <slash> 		: "╱"   U2717 # Box drawings light diagonal upper right to lower left
+<Multi_key> <backslash> <backslash> 	: "╲"   U2717 # Box drawings light diagonal upper left to lower right
+
