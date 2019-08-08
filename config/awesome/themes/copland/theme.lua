@@ -298,7 +298,13 @@ local volumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
 
 -- Weather
 theme.weather = lain.widget.weather({
-    city_id = 2643743, -- placeholder (London)
+    city_id = 479561,
+    notification_preset = { font = theme.font },
+    lang = "ru",
+    settings = function()
+        units = math.floor(weather_now["main"]["temp"])
+        widget:set_markup(" " .. markup.font(theme.font, units .. "°C") .. " ")
+    end
 })
 
 -- Separators
@@ -377,6 +383,8 @@ function theme.at_screen_connect(s)
             -- baticon,
             -- batwidget,
             -- bar_spr,
+            theme.weather.icon,
+            theme.weather.widget,
             memicon,
             memory,
             swap_label,
