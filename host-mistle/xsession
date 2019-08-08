@@ -10,8 +10,10 @@ case "${DESKTOP_SESSION-}" in
 		aw-watcher-afk &
 		xss-lock -- i3lock -c000000 &
 		tilda &
+		# Tray indicators
 		xxkb &
 		nm-applet &
+		pamac-tray &
 		;;
 esac
 
