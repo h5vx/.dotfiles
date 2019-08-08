@@ -11,13 +11,13 @@
 :nnoremap K :action PreviousTab<CR>
 :nnoremap J :action NextTab<CR>
 
-" Navigate metgods
+" Navigate methods
 :nnoremap U :action MethodUp<CR>
 :nnoremap D :action MethodDown<CR>
 
 " Tab actions
 :nnoremap ZC :action CloseAllUnpinnedEditors<CR>
-:nnoremap ZQ :q<CR>
+:nnoremap ZQ :action CloseActiveTab<CR>
 :nnoremap ZR :action ReopenClosedTab<CR>
 
 " Insert after word
@@ -36,3 +36,8 @@
 " Next/Prev token with screen centering
 :nnoremap * *zz
 :nnoremap # #zz
+
+" KJump plugin (EasyMotion)
+nmap \s :action KJumpAction<cr>
+nmap \w :action KJumpAction.Word0<cr>
+nmap \l :action KJumpAction.Line<cr>
