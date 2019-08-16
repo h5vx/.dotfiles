@@ -20,8 +20,8 @@ theme.wallpaper                                 = theme.dir .. "/wall.png"
 theme.font                                      = "Varela Round 11"
 theme.fg_normal                                 = "#BBBBBB"
 theme.fg_focus                                  = "#78A4FF"
-theme.bg_normal                                 = "#111111"
-theme.bg_focus                                  = "#111111"
+theme.bg_normal                                 = "#0C0E15"
+theme.bg_focus                                  = "#0C0E15"
 theme.fg_urgent                                 = "#BBBBBB"
 theme.bg_urgent                                 = "#444444"
 theme.border_width                              = 1
@@ -29,7 +29,7 @@ theme.border_normal                             = "#141414"
 theme.border_focus                              = "#93B6FF"
 theme.taglist_fg_focus                          = "#FFFFFF"
 theme.taglist_bg_focus                          = "#660033"
-theme.taglist_bg_normal                         = "#111111"
+theme.taglist_bg_normal                         = "#0C0E15"
 theme.titlebar_bg_normal                        = "#191919"
 theme.titlebar_bg_focus                         = "#262626"
 theme.menu_height                               = 16
@@ -298,7 +298,13 @@ local volumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
 
 -- Weather
 theme.weather = lain.widget.weather({
-    city_id = 2643743, -- placeholder (London)
+    city_id = 479561,
+    notification_preset = { font = theme.font },
+    lang = "ru",
+    settings = function()
+        units = math.floor(weather_now["main"]["temp"])
+        widget:set_markup(" " .. markup.font(theme.font, units .. "°C") .. " ")
+    end
 })
 
 -- Separators
@@ -377,6 +383,8 @@ function theme.at_screen_connect(s)
             -- baticon,
             -- batwidget,
             -- bar_spr,
+            theme.weather.icon,
+            theme.weather.widget,
             memicon,
             memory,
             swap_label,
