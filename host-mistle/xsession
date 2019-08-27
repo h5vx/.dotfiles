@@ -14,6 +14,13 @@ case "${DESKTOP_SESSION-}" in
 		xxkb &
 		nm-applet &
 		pamac-tray &
+		# Applications
+		vivaldi-stable &
+		slack &
+		thunderbird &
+		zeal &
+		pycharm &
+		gitkraken &
 		;;
 esac
 
