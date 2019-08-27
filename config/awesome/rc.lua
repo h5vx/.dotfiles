@@ -648,9 +648,11 @@ for i = 1, 9 do
         descr_move = {description = "move focused client to tag #", group = "tag"}
         descr_toggle_focus = {description = "toggle focused client on tag #", group = "tag"}
     end
+
+    local key = "#" .. i + 9
     globalkeys = my_table.join(globalkeys,
         -- View tag only.
-        awful.key({ modkey }, "#" .. i + 9,
+        awful.key({ modkey }, key,
                   function ()
                         local screen = awful.screen.focused()
                         local tag = screen.tags[i]
@@ -660,7 +662,7 @@ for i = 1, 9 do
                   end,
                   descr_view),
         -- Toggle tag display.
-        awful.key({ modkey, "Control" }, "#" .. i + 9,
+        awful.key({ modkey, "Control" }, key,
                   function ()
                       local screen = awful.screen.focused()
                       local tag = screen.tags[i]
@@ -670,7 +672,7 @@ for i = 1, 9 do
                   end,
                   descr_toggle),
         -- Move client to tag.
-        awful.key({ modkey, "Shift" }, "#" .. i + 9,
+        awful.key({ modkey, "Shift" }, key,
                   function ()
                       if client.focus then
                           local tag = client.focus.screen.tags[i]
@@ -681,7 +683,7 @@ for i = 1, 9 do
                   end,
                   descr_move),
         -- Toggle tag on focused client.
-        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
+        awful.key({ modkey, "Control", "Shift" }, key,
                   function ()
                       if client.focus then
                           local tag = client.focus.screen.tags[i]
@@ -739,6 +741,24 @@ awful.rules.rules = {
 
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
+    -- Vivaldi -> [1]
+    { rule = { class = "vivaldi-stable" },
+      properties = { screen = 1, tag = awful.util.tagnames[1] } },
+    -- Slack   -> [3]
+    { rule = { class = "Slack" },
+      properties = { screen = 1, tag = awful.util.tagnames[3] } },
+    -- Thunderbird -> [3]
+    { rule = { class = "Thunderbird" },
+      properties = { screen = 1, tag = awful.util.tagnames[3] } },
+    -- Pycharm -> [4]
+    { rule = { class = "jetbrains-pycharm" },
+      properties = { screen = 1, tag = awful.util.tagnames[4] } },
+    -- Zeal    -> [5]
+    { rule = { class = "Zeal" },
+      properties = { screen = 1, tag = awful.util.tagnames[5] } },
+    -- Kraken -> [6]
+    { rule = { class = "GitKraken" },
+      properties = { screen = 1, tag = awful.util.tagnames[6] } },
 }
 -- }}}
 
