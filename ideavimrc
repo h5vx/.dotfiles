@@ -1,7 +1,11 @@
-" Toggle case-insensitive search
+" Enable case-insensitive search
 :set ignorecase
-" Toggle search highlighting
+" Enable search highlighting
 :set hlsearch
+
+
+" Clear search highlighting
+:nnoremap <Esc><Esc> :noh<CR>
 
 " Navigate by history, like in web browser
 :nnoremap H :action Back<CR>
