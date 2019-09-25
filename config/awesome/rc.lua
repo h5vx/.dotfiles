@@ -554,6 +554,9 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "a", function () awful.spawn(guieditor) end,
               {description = "run gui editor", group = "launcher"}),
     --]]
+    -- File browser
+    awful.key({ modkey }, "f", function () os.execute('rofi -show file-browser') end,
+      {description = "file browser", group = "launcher"}),
 
     -- Default
     --[[ Menubar 
