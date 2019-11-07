@@ -3,6 +3,7 @@
 " Enable search highlighting
 :set hlsearch
 
+:nnoremap Q :action CloseEditor<CR>
 
 " Clear search highlighting
 :nnoremap <Esc><Esc> :noh<CR>
