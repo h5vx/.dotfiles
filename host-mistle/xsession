@@ -13,6 +13,7 @@ case "${DESKTOP_SESSION-}" in
 		# Tray indicators
 		xxkb &
 		nm-applet &
+		udiskie -t &
 		pamac-tray &
 		# Applications
 		vivaldi-stable &
