@@ -1,0 +1,4 @@
+[credential]
+	helper = cache
+[color]
+	ui = true
