@@ -1,14 +1,17 @@
 #!/bin/sh
 
+eval `ssh-agent -s`; ssh-add < /dev/null
+
 case "${DESKTOP_SESSION-}" in
 	awesome|dwm)
+		~/scripts/monitor-setup
 		setxkbmap -layout us,ru -option grp:alt_shift_toggle,compose:ralt,grp_led:scroll
 		/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 		compton -b
 		aw-server &
 		aw-watcher-window &
 		aw-watcher-afk &
-		xss-lock -- i3lock -c000000 &
+		xss-lock -- i3lock-fancy -p -t " " &
 		tilda &
 		# Tray indicators
 		xxkb &
@@ -24,7 +27,5 @@ case "${DESKTOP_SESSION-}" in
 		gitkraken &
 		;;
 esac
-
-eval `ssh-agent -s`; ssh-add < /dev/null
 
 exec $DESKTOP_SESSION
