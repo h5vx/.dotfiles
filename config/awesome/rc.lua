@@ -101,7 +101,7 @@ local terminal     = os.getenv("TERMINAL") or "kitty"
 local editor       = os.getenv("EDITOR") or "vim"
 local gui_editor   = "subl3"
 local browser      = "chromium"
-local scrlocker    = "i3lock -c000000"
+local scrlocker    = "i3lock-fancy -p -t ' '"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "🌎", "📟", "📝", "🌀", "📕", "🐙" }
