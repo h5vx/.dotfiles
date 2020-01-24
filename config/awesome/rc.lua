@@ -424,22 +424,22 @@ globalkeys = my_table.join(
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
               {description = "-10%", group = "hotkeys"}),
 
-    -- ALSA volume control
+    -- PulseAudio volume control
     awful.key({ modkey }, "=",
         function ()
-            os.execute(string.format("amixer -q set %s 3%%+", beautiful.volume.channel))
+            os.execute("pamixer -i 3")
             beautiful.volume.update()
         end,
         {description = "volume up", group = "hotkeys"}),
     awful.key({ modkey }, "-",
         function ()
-            os.execute(string.format("amixer -q set %s 3%%-", beautiful.volume.channel))
+            os.execute("pamixer -d 3")
             beautiful.volume.update()
         end,
         {description = "volume down", group = "hotkeys"}),
     awful.key({ modkey }, "v",
         function ()
-            os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
+            os.execute("pamixer -t")
             beautiful.volume.update()
         end,
         {description = "toggle mute", group = "hotkeys"}),
