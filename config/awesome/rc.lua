@@ -67,6 +67,12 @@ run_once({
     "nm-applet"
 })
 
+local function center_client(c)
+	local wa = awful.screen.focused().workarea
+	c.x = wa.x + (wa.width - c.width) / 2
+	c.y = wa.y + (wa.height - c.height) / 2
+end
+
 -- This function implements the XDG autostart specification
 --[[
 awful.spawn.with_shell(
@@ -616,7 +622,10 @@ clientkeys = my_table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey, "Control" }, "space", function(c)
+					awful.client.floating.toggle()
+					if client.focus.y <= 0 then center_client(c) end
+				end,
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
