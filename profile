@@ -1,5 +1,5 @@
 export TERMINAL=kitty
-export EDITOR=nvim
+export EDITOR=vim
 export VISUAL=subl3
 export WORKON_HOME=~/.venv
 
