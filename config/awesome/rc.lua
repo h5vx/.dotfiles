@@ -107,7 +107,8 @@ local terminal     = os.getenv("TERMINAL") or "kitty"
 local editor       = os.getenv("EDITOR") or "vim"
 local gui_editor   = "subl3"
 local browser      = "chromium"
-local scrlocker    = "i3lock-fancy -p -t ' '"
+local scrlocker    = "~/.local/bin/lock"
+local mylauncher   = "~/.local/bin/h5v-launcher"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "🌎", "📟", "📝", "🌀", "📕", "🐙" }
@@ -336,7 +337,7 @@ globalkeys = my_table.join(
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
-    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
+    awful.key({ modkey, "Shift"   }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey,           }, "Tab",
         function ()
@@ -450,6 +451,14 @@ globalkeys = my_table.join(
         end,
         {description = "toggle mute", group = "hotkeys"}),
 
+    -- MPRIS player volume control
+    awful.key({ modkey, "Shift" }, "=",
+        function () os.execute("playerctl volume 0.05+") end,
+        {description = "Player volume up", group = "widgets"}),
+    awful.key({ modkey, "Shift" }, "-",
+        function () os.execute("playerctl volume 0.05-") end,
+        {description = "Player volume down", group = "widgets"}),
+
     --[-[ Player control (MPRIS), XF86- keys
     awful.key({ }, "XF86AudioNext",
         function ()
@@ -496,7 +505,7 @@ globalkeys = my_table.join(
         {description = "seek +5s", group = "widgets"}),
     awful.key({ modkey }, "F8",
         function ()
-            os.execute("playerctl position -5")
+            os.execute("playerctl position 5-")
         end,
         {description = "seek -5s", group = "widgets"}),
     awful.key({ modkey }, "F11",
@@ -569,14 +578,14 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
     --]]
-    --[-[ dmenu
+    --[[ dmenu
     awful.key({ modkey }, "r", function ()
             os.execute(string.format("dmenu_run -i -fn 'Monospace' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
             beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus))
         end,
         {description = "show dmenu", group = "launcher"}),
     --]]
-    --[[ Prompt
+    --[-[ Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
     --]]
@@ -591,17 +600,19 @@ globalkeys = my_table.join(
       {description = "switch windows", group = "launcher"}),
     --]]
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
+--     awful.key({ modkey }, "x",
+--               function ()
+--                   awful.prompt.run {
+--                     prompt       = "Run Lua code: ",
+--                     textbox      = awful.screen.focused().mypromptbox.widget,
+--                     exe_callback = awful.util.eval,
+--                     history_path = awful.util.get_cache_dir() .. "/history_eval"
+--                   }
+--               end,
+--               {description = "lua execute prompt", group = "awesome"}),
     --]]
+    awful.key({ modkey }, "x", function () os.execute(mylauncher) end,
+      {description = "custom launcher", group = "launcher"}),
 
     --[-[ Window transparency control (needs transset-df)
         awful.key({ modkey, "Control" }, "-", function () os.execute('transset-df -a --dec 0.1') end,
@@ -753,6 +764,10 @@ awful.rules.rules = {
 
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
+
+    { rule = { class = "Zathura" },
+          properties = { maximized = true } },
+
     -- Vivaldi -> [1]
     { rule = { class = "vivaldi-stable" },
       properties = { screen = 1, tag = awful.util.tagnames[1] } },
@@ -771,6 +786,9 @@ awful.rules.rules = {
     -- Kraken -> [6]
     { rule = { class = "GitKraken" },
       properties = { screen = 1, tag = awful.util.tagnames[6] } },
+    -- Tilda workaround
+    { rule = { class = "Tilda" },
+      properties = { floating = true } },
 }
 -- }}}
 
