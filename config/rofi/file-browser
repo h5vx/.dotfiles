@@ -1,0 +1,11 @@
+icon-theme "elementary"
+# cmd        "exo-open"
+oc-cmd     "zathura;icon:zathura"
+oc-cmd     "krita;icon:krita"
+oc-cmd     "sxiv;icon:sxiv"
+depth      2
+show-hidden
+
+# use-mode-keys
+# open-parent-as-self
+
