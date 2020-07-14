@@ -91,8 +91,6 @@ configuration {
 /*	kb-mode-previous: "Shift+Left,Control+ISO_Left_Tab";*/
 /*	kb-row-left: "Control+Page_Up";*/
 /*	kb-row-right: "Control+Page_Down";*/
-/*	kb-row-up: "Up,Control+p,ISO_Left_Tab";*/
-/*	kb-row-down: "Down,Control+n";*/
 /*	kb-row-tab: "Tab";*/
 /*	kb-page-prev: "Page_Up";*/
 /*	kb-page-next: "Page_Down";*/
@@ -140,4 +138,6 @@ configuration {
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
-rofi.theme: /usr/share/rofi/themes/purple.rasi
+rofi.theme: /usr/share/rofi/themes/DarkBlue.rasi
+rofi.show-icons: true
+
