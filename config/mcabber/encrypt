@@ -1,0 +1,2 @@
+#!/bin/sh
+openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -in mcabberrc -out mcabberrc.enc
