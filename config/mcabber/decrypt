@@ -1,0 +1,22 @@
+#!/bin/sh
+infile=mcabberrc.enc
+outfile=mcabberrc
+
+if [[ -n $1 ]]; then
+    outfile=$1
+fi
+
+if [[ ! -f $infile ]]; then
+    >&2 echo "$infile doesn't exists"
+    exit 1
+fi
+
+if [[ -f $outfile ]]; then
+    echo -n "$outfile will be overwritten! Proceed? [y/N]: "
+    read answer
+    if [[ $answer != "y" && $answer != "Y" ]]; then
+        exit
+    fi
+fi
+
+openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -d -in "$infile" > "$outfile"
