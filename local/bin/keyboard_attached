@@ -1,0 +1,4 @@
+#!/usr/bin/fish
+set -gx DISPLAY :0
+set -gx XAUTHORITY /home/h5v/.Xauthority
+xmodmap /home/h5v/.Xmodmap

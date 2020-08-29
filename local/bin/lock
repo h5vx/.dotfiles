@@ -1,0 +1,52 @@
+#!/bin/sh
+FONT="Iosevka"
+
+COLOR_FG="#78A4FFFF"
+COLOR_BG="#0C0E1599"
+COLOR_TEXT="#FFFFFFFF"
+COLOR_RED="FF858544"
+
+TIMESTR="%H:%M"
+TIMEPOS="300:200"
+TIMESIZE=200
+
+DATEPOS="301:240"
+DATESIZE=19
+
+WRONGTEXT=""
+VERIFTEXT=""
+NOINPTEXT=""
+
+RINGWIDTH="2.0"
+
+COLOR_RING=$COLOR_BG  # Ring default color
+COLOR_RINGVER=$COLOR_BG    # while the password is being verified
+COLOR_RINGWRONG=$COLOR_BG  # incorrect password
+COLOR_RINGVER=$COLOR_BG  # Color while the password is being verified
+
+
+i3lock  --blur=9 --keylayout=2 --force-clock --show-failed-attempts \
+	--ringcolor=$COLOR_BG \
+	--layoutcolor=$COLOR_TEXT \
+	--timecolor=$COLOR_TEXT \
+	--datecolor=$COLOR_TEXT \
+	--wrongcolor=$COLOR_RED \
+	--time-font=$FONT \
+	--date-font=$FONT \
+	--layout-font=$FONT \
+	--verif-font=$FONT \
+	--wrong-font=$FONT \
+	--greeter-font=$FONT \
+	--timesize=$TIMESIZE \
+	--datesize=$DATESIZE \
+	--datepos=$DATEPOS \
+	--timestr=$TIMESTR \
+	--timepos=$TIMEPOS \
+	--bshlcolor=$COLOR_FG \
+	--keyhlcolor=$COLOR_FG \
+	--wrongtext=$WRONGTEXT \
+	--veriftext=$VERIFTEXT \
+	--noinputtext=$NOINPTEXT \
+	--ring-width=$RINGWIDTH \
+	--ringwrongcolor=$COLOR_RED \
+	--insidewrongcolor=$COLOR_RED \
