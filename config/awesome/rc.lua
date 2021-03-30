@@ -329,10 +329,14 @@ globalkeys = my_table.join(
               {description = "show main menu", group = "awesome"}),
     --]]
     -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
-              {description = "swap with next client by index", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
-              {description = "swap with previous client by index", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.bydirection("down")    end,
+              {description = "swap with lower client", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.bydirection("up")    end,
+              {description = "swap with upper client", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "h", function () awful.client.swap.bydirection("left")    end,
+              {description = "swap with left client", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "l", function () awful.client.swap.bydirection("right")    end,
+              {description = "swap with right client", group = "client"}),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
@@ -389,9 +393,9 @@ globalkeys = my_table.join(
               {description = "increase master width factor", group = "layout"}),
     awful.key({ modkey }, "[",     function () awful.tag.incmwfact(-0.05)          end,
               {description = "decrease master width factor", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
+    awful.key({ modkey, "Shift"   }, "]",     function () awful.tag.incnmaster( 1, nil, true) end,
               {description = "increase the number of master clients", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
+    awful.key({ modkey, "Shift"   }, "[",     function () awful.tag.incnmaster(-1, nil, true) end,
               {description = "decrease the number of master clients", group = "layout"}),
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
               {description = "increase the number of columns", group = "layout"}),
@@ -445,6 +449,25 @@ globalkeys = my_table.join(
         end,
         {description = "volume down", group = "hotkeys"}),
     awful.key({ modkey }, "v",
+        function ()
+            os.execute("pamixer -t")
+            beautiful.volume.update()
+        end,
+        {description = "toggle mute", group = "hotkeys"}),
+
+    awful.key({ }, "XF86AudioRaiseVolume",
+        function ()
+            os.execute("pamixer -i 3")
+            beautiful.volume.update()
+        end,
+        {description = "+3%", group = "hotkeys"}),
+    awful.key({ }, "XF86AudioLowerVolume",
+        function ()
+            os.execute("pamixer -d 3")
+            beautiful.volume.update()
+        end,
+        {description = "-3%", group = "hotkeys"}),
+    awful.key({ }, "XF86AudioMute",
         function ()
             os.execute("pamixer -t")
             beautiful.volume.update()
@@ -585,13 +608,13 @@ globalkeys = my_table.join(
         end,
         {description = "show dmenu", group = "launcher"}),
     --]]
-    --[-[ Prompt
+    --[[ Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
     --]]
     --[-[ Rofi
-    --awful.key({ modkey }, "r", function () os.execute('rofi -show run') end,
-    --  {description = "run prompt", group = "launcher"}),
+    awful.key({ modkey }, "r", function () os.execute('rofi -show run') end,
+      {description = "run prompt", group = "launcher"}),
     awful.key({ modkey }, "p", function () os.execute('rofi -show drun -show-icons') end,
       {description = "launch application", group = "launcher"}),
     awful.key({ modkey }, "w", function () os.execute('rofi -show window') end,
@@ -638,6 +661,16 @@ clientkeys = my_table.join(
 					if client.focus.y <= 0 then center_client(c) end
 				end,
               {description = "toggle floating", group = "client"}),
+    --[-[ Moving / Resizing
+    awful.key({ modkey, altkey }, "h", function (c) c.x = c.x - 100 end,
+              {description = "move left", group = "client"}),
+    awful.key({ modkey, altkey }, "l", function (c) c.x = c.x + 100 end,
+              {description = "move right", group = "client"}),
+    awful.key({ modkey, altkey }, "k", function (c) c.y = c.y - 100 end,
+              {description = "move up", group = "client"}),
+    awful.key({ modkey, altkey }, "j", function (c) c.y = c.y + 100 end,
+              {description = "move down", group = "client"}),
+    --]]
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
@@ -788,6 +821,10 @@ awful.rules.rules = {
       properties = { screen = 1, tag = awful.util.tagnames[6] } },
     -- Tilda workaround
     { rule = { class = "Tilda" },
+      properties = { floating = true } },
+    { rule = { class = "Guake" },
+      properties = { floating = true } },
+    { rule = { class = "TeamViewer" },
       properties = { floating = true } },
 }
 -- }}}

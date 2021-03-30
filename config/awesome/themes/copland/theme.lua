@@ -15,20 +15,20 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/copland"
-theme.wallpaper                                 = theme.dir .. "/wall.png"
+theme.wallpaper                                 = { theme.dir .. "/wall.png", theme.dir .. "/wall2.png" }
 -- theme.font                                      = "Fura Code 11"
 theme.size_multiplier				= 1.33
 theme.font                                      = "Varela Round 11"
 theme.widget_font                               = "FuraCode Nerd Font 10"
 theme.fg_normal                                 = "#BBBBBB"
-theme.fg_focus                                  = "#78A4FF"
+theme.fg_focus                                  = "#C708C4"
 theme.bg_normal                                 = "#0C0E15"
 theme.bg_focus                                  = "#0C0E15"
 theme.fg_urgent                                 = "#BBBBBB"
 theme.bg_urgent                                 = "#444444"
 theme.border_width                              = 1
 theme.border_normal                             = "#141414"
-theme.border_focus                              = "#93B6FF"
+theme.border_focus                              = "#C708C4"
 theme.taglist_fg_focus                          = "#FFFFFF"
 theme.taglist_bg_focus                          = "#660033"
 theme.taglist_bg_normal                         = "#0C0E15"
@@ -346,6 +346,11 @@ function theme.at_screen_connect(s)
     if type(wallpaper) == "function" then
         wallpaper = wallpaper(s)
     end
+
+    if type(wallpaper) == "table" then
+        wallpaper = wallpaper[s.index]
+    end
+
     gears.wallpaper.maximized(wallpaper, s, true)
 
     -- Tags
@@ -394,8 +399,8 @@ function theme.at_screen_connect(s)
             mpdicon,
             theme.mpd.widget,
             -- bar_spr,
-            theme.weather.icon,
-            theme.weather.widget,
+            -- theme.weather.icon,
+            -- theme.weather.widget,
             memicon,
             memory,
             swap_label,
