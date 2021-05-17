@@ -25,6 +25,9 @@
 :nnoremap ZQ :action CloseActiveTab<CR>
 :nnoremap ZR :action ReopenClosedTab<CR>
 
+:nnoremap gc :action CommentByLineComment<CR>
+:vnoremap gc :action CommentByLineComment<CR>
+
 " Insert after word
 :nnoremap I wi
 
