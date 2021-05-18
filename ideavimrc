@@ -27,6 +27,8 @@
 
 :nnoremap gc :action CommentByLineComment<CR>
 :vnoremap gc :action CommentByLineComment<CR>
+:vnoremap gr :action RefactoringMenu<CR>
+:nnoremap gr :action RefactoringMenu<CR>
 
 " Insert after word
 :nnoremap I wi
