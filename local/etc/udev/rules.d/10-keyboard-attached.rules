@@ -1,2 +1,0 @@
-ACTION=="bind", ENV{PRODUCT}=="17ef/6047/330", ENV{DISPLAY}=":0" RUN+="/bin/su h5v --command='/home/h5v/.local/bin/keyboard_attached'", OWNER="h5v"
-
