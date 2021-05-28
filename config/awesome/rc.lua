@@ -4,11 +4,6 @@
      github.com/lcpz
 
 --]]
-
--- {{{ Required libraries
-local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
-local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
-
 local gears         = require("gears")
 local awful         = require("awful")
                       require("awful.autofocus")
@@ -21,7 +16,6 @@ local freedesktop   = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
 local my_table      = awful.util.table or gears.table -- 4.{0,1} compatibility
--- }}}
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -47,26 +41,6 @@ do
 end
 -- }}}
 
--- {{{ Autostart windowless processes
-
--- This function will run once every time Awesome is started
-local function run_once(cmd_arr)
-    for _, cmd in ipairs(cmd_arr) do
-        awful.spawn.with_shell(string.format("pgrep -u $USER -x '%s' > /dev/null || (%s)", cmd, cmd))
-    end
-end
-
-run_once({ 
---  These are now executed by ~/.xsession
---  "setxkbmap -layout us,ru -option grp:alt_shift_toggle",
---  "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1",
---  "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
-    "compton",
-    "tilda", 
-    "xxkb",
-    "nm-applet"
-})
-
 local function center_client(c)
 	local wa = awful.screen.focused().workarea
 	c.x = wa.x + (wa.width - c.width) / 2
@@ -82,8 +56,6 @@ awful.spawn.with_shell(
     'dex --environment Awesome --autostart --search-paths "$XDG_CONFIG_DIRS/autostart:$XDG_CONFIG_HOME/autostart"' -- https://github.com/jceb/dex
 )
 --]]
-
--- }}}
 
 -- {{{ Variable definitions
 
@@ -256,15 +228,15 @@ root.buttons(my_table.join(
 globalkeys = my_table.join(
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ }, "Print", function() os.execute("flameshot gui") end,
+    awful.key({ }, "Print", function() awful.spawn("flameshot gui") end,
               {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
-    awful.key({ altkey, "Control" }, "l", function () os.execute(scrlocker) end,
+    awful.key({ altkey, "Control" }, "l", function () awful.spawn.with_shell(scrlocker) end,
               {description = "lock screen", group = "hotkeys"}),
 
     -- lock to greeter
-    awful.key({ modkey, "Control" }, "l", function() os.execute("dm-tool switch-to-greeter") end,
+    awful.key({ modkey, "Control" }, "l", function() awful.spawn("dm-tool switch-to-greeter") end,
               {description = "switch user", group = "hotkeys"}),
 
     -- Hotkeys
@@ -430,82 +402,88 @@ globalkeys = my_table.join(
               {description = "show weather", group = "widgets"}),
     --]]
     -- Brightness
-    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
+    awful.key({ }, "XF86MonBrightnessUp", function () 
+        awful.spawn("xbacklight -inc 10") 
+        awful.spawn("ddcutil -b 4 setvcp 0x10 + 10") 
+    end,
               {description = "+10%", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
+    awful.key({ }, "XF86MonBrightnessDown", function () 
+        awful.spawn("xbacklight -dec 10") 
+        awful.spawn("ddcutil -b 4 setvcp 0x10 - 10") 
+    end,
               {description = "-10%", group = "hotkeys"}),
 
     -- PulseAudio volume control
     awful.key({ modkey }, "=",
         function ()
-            os.execute("pamixer -i 3")
+            awful.spawn("pamixer -i 3")
             beautiful.volume.update()
         end,
         {description = "volume up", group = "hotkeys"}),
     awful.key({ modkey }, "-",
         function ()
-            os.execute("pamixer -d 3")
+            awful.spawn("pamixer -d 3")
             beautiful.volume.update()
         end,
         {description = "volume down", group = "hotkeys"}),
     awful.key({ modkey }, "v",
         function ()
-            os.execute("pamixer -t")
+            awful.spawn("pamixer -t")
             beautiful.volume.update()
         end,
         {description = "toggle mute", group = "hotkeys"}),
 
     awful.key({ }, "XF86AudioRaiseVolume",
         function ()
-            os.execute("pamixer -i 3")
+            awful.spawn("pamixer -i 3")
             beautiful.volume.update()
         end,
         {description = "+3%", group = "hotkeys"}),
     awful.key({ }, "XF86AudioLowerVolume",
         function ()
-            os.execute("pamixer -d 3")
+            awful.spawn("pamixer -d 3")
             beautiful.volume.update()
         end,
         {description = "-3%", group = "hotkeys"}),
     awful.key({ }, "XF86AudioMute",
         function ()
-            os.execute("pamixer -t")
+            awful.spawn("pamixer -t")
             beautiful.volume.update()
         end,
         {description = "toggle mute", group = "hotkeys"}),
 
     -- MPRIS player volume control
     awful.key({ modkey, "Shift" }, "=",
-        function () os.execute("playerctl volume 0.05+") end,
+        function () awful.spawn("playerctl volume 0.05+") end,
         {description = "Player volume up", group = "widgets"}),
     awful.key({ modkey, "Shift" }, "-",
-        function () os.execute("playerctl volume 0.05-") end,
+        function () awful.spawn("playerctl volume 0.05-") end,
         {description = "Player volume down", group = "widgets"}),
 
     --[-[ Player control (MPRIS), XF86- keys
     awful.key({ }, "XF86AudioNext",
         function ()
-            os.execute("playerctl next")
+            awful.spawn("playerctl next")
         end,
         {description = "next track", group = "widgets"}),
     awful.key({ }, "XF86AudioPrev",
         function ()
-            os.execute("playerctl previous")
+            awful.spawn("playerctl previous")
         end,
         {description = "previous track", group = "widgets"}),
     awful.key({ "Control" }, "XF86AudioNext",
         function ()
-            os.execute("playerctl position 5+")
+            awful.spawn("playerctl position 5+")
         end,
         {description = "seek +5s", group = "widgets"}),
     awful.key({ "Control" }, "XF86AudioPrev",
         function ()
-            os.execute("playerctl position -5")
+            awful.spawn("playerctl position -5")
         end,
         {description = "seek -5s", group = "widgets"}),
     awful.key({ }, "XF86AudioPlay",
         function ()
-            os.execute("playerctl play-pause")
+            awful.spawn("playerctl play-pause")
         end,
         {description = "play/pause", group = "widgets"}),
     --]]
@@ -513,27 +491,27 @@ globalkeys = my_table.join(
     --[-[ Player control (MPRIS) without XF86- keys
     awful.key({ modkey }, "F12",
         function ()
-            os.execute("playerctl next")
+            awful.spawn("playerctl next")
         end,
         {description = "next track", group = "widgets"}),
     awful.key({ modkey }, "F10",
         function ()
-            os.execute("playerctl previous")
+            awful.spawn("playerctl previous")
         end,
         {description = "previous track", group = "widgets"}),
     awful.key({ modkey }, "F9",
         function ()
-            os.execute("playerctl position 5+")
+            awful.spawn("playerctl position 5+")
         end,
         {description = "seek +5s", group = "widgets"}),
     awful.key({ modkey }, "F8",
         function ()
-            os.execute("playerctl position 5-")
+            awful.spawn("playerctl position 5-")
         end,
         {description = "seek -5s", group = "widgets"}),
     awful.key({ modkey }, "F11",
         function ()
-            os.execute("playerctl play-pause")
+            awful.spawn("playerctl play-pause")
         end,
         {description = "play/pause", group = "widgets"}),
     --]]
@@ -542,25 +520,25 @@ globalkeys = my_table.join(
     --[[
     awful.key({ altkey, "Control" }, "Up",
         function ()
-            os.execute("mpc toggle")
+            awful.spawn("mpc toggle")
             beautiful.mpd.update()
         end,
         {description = "mpc toggle", group = "widgets"}),
     awful.key({ altkey, "Control" }, "Down",
         function ()
-            os.execute("mpc stop")
+            awful.spawn("mpc stop")
             beautiful.mpd.update()
         end,
         {description = "mpc stop", group = "widgets"}),
     awful.key({ altkey, "Control" }, "Left",
         function ()
-            os.execute("mpc prev")
+            awful.spawn("mpc prev")
             beautiful.mpd.update()
         end,
         {description = "mpc prev", group = "widgets"}),
     awful.key({ altkey, "Control" }, "Right",
         function ()
-            os.execute("mpc next")
+            awful.spawn("mpc next")
             beautiful.mpd.update()
         end,
         {description = "mpc next", group = "widgets"}),
@@ -593,7 +571,7 @@ globalkeys = my_table.join(
               {description = "run gui editor", group = "launcher"}),
     --]]
     -- File browser
-    awful.key({ modkey }, "f", function () os.execute('rofi -show file-browser') end,
+    awful.key({ modkey }, "f", function () awful.spawn('rofi -show file-browser') end,
       {description = "file browser", group = "launcher"}),
 
     -- Default
@@ -603,7 +581,7 @@ globalkeys = my_table.join(
     --]]
     --[[ dmenu
     awful.key({ modkey }, "r", function ()
-            os.execute(string.format("dmenu_run -i -fn 'Monospace' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+            awful.spawn(string.format("dmenu_run -i -fn 'Monospace' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
             beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus))
         end,
         {description = "show dmenu", group = "launcher"}),
@@ -613,13 +591,13 @@ globalkeys = my_table.join(
               {description = "run prompt", group = "launcher"}),
     --]]
     --[-[ Rofi
-    awful.key({ modkey }, "r", function () os.execute('rofi -show run') end,
+    awful.key({ modkey }, "r", function () awful.spawn('rofi -show run') end,
       {description = "run prompt", group = "launcher"}),
-    awful.key({ modkey }, "p", function () os.execute('rofi -show drun -show-icons') end,
+    awful.key({ modkey }, "p", function () awful.spawn('rofi -show drun -show-icons') end,
       {description = "launch application", group = "launcher"}),
-    awful.key({ modkey }, "w", function () os.execute('rofi -show window') end,
+    awful.key({ modkey }, "w", function () awful.spawn('rofi -show window') end,
       {description = "switch windows", group = "launcher"}), 
-    awful.key({ modkey }, "u", function () os.execute('rofimoji') end,
+    awful.key({ modkey }, "u", function () awful.spawn('rofimoji') end,
       {description = "switch windows", group = "launcher"}),
     --]]
 
@@ -634,13 +612,13 @@ globalkeys = my_table.join(
 --               end,
 --               {description = "lua execute prompt", group = "awesome"}),
     --]]
-    awful.key({ modkey }, "x", function () os.execute(mylauncher) end,
+    awful.key({ modkey }, "x", function () awful.spawn.with_shell(mylauncher) end,
       {description = "custom launcher", group = "launcher"}),
 
     --[-[ Window transparency control (needs transset-df)
-        awful.key({ modkey, "Control" }, "-", function () os.execute('transset-df -a --dec 0.1') end,
+        awful.key({ modkey, "Control" }, "-", function () awful.spawn('transset-df -a --dec 0.1') end,
           {description = "window transparency +10%", group = "client"}),
-        awful.key({ modkey, "Control" }, "=", function () os.execute('transset-df -a --inc 0.1') end,
+        awful.key({ modkey, "Control" }, "=", function () awful.spawn('transset-df -a --inc 0.1') end,
           {description = "window transparency -10%", group = "client"})
     --]]
 )
