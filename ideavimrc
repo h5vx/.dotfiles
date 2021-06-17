@@ -47,6 +47,8 @@
 :nnoremap * *zz
 :nnoremap # #zz
 
+:nnoremap `` :action RecentFiles<CR>
+
 " KJump plugin (EasyMotion)
 nmap \s :action KJumpAction<cr>
 nmap \w :action KJumpAction.Word0<cr>

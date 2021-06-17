@@ -1,16 +1,37 @@
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
+call plug#begin('~/.vim/plugged')
+
+Plug 'wincent/terminus'
+Plug 'airblade/vim-gitgutter'
+
+call plug#end()
+
+:let mapleader = " "
+
 " Use 4 spaces instead of tabs
-set expandtab               
+set noswapfile
+
+" Enable case-insensitive search
+set ignorecase
+
+" Enable search highlighting
+:set hlsearch
+
+" Clear search highlighting
+:nnoremap <Esc><Esc> :noh<CR>
+
+set expandtab               " Use 4 spaces instead of tabs
 set tabstop=4
 set shiftwidth=4
 
 " Show line numbers
 set number
 
-" Show ruler
-set colorcolumn=81
+" Next/Prev token with screen centering
+:nnoremap * *zz
+:nnoremap # #zz
 
 " Move lines up/down
 nnoremap <M-j> :m .+1<CR>==
@@ -19,3 +40,23 @@ inoremap <M-j> <Esc>:m .+1<CR>==gi
 inoremap <M-k> <Esc>:m .-2<CR>==gi
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
+
+" Disable GUI menus
+:let did_install_default_menus = 1
+:let did_install_syntax_menu = 1
+
+" Display some whitespace characters
+:set list
+:set listchars=tab:→\ ,trail:·,nbsp:⎵
+
+" Reduce update latency, default is 4000
+:set updatetime=100
+
+" GitGutter settings
+highlight SignColumn      guibg=black ctermbg=black
+highlight GitGutterAdd    guifg=#009900 ctermbg=black ctermfg=lightgreen
+highlight GitGutterChange guifg=#bbbb00 ctermbg=black ctermfg=yellow
+highlight GitGutterDelete guifg=#ff2222 ctermbg=black ctermfg=red
+let g:gitgutter_sign_added = '█'
+let g:gitgutter_sign_modified = '█'
+let g:gitgutter_sign_removed = '█'
