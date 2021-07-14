@@ -2,17 +2,21 @@
 
 case "${DESKTOP_SESSION-}" in
 	awesome|dwm)
-		setxkbmap -layout us,ru -option grp:alt_shift_toggle,compose:ralt,grp_led:scroll
-		xmodmap ~/.xmodmap
 		/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
-		compton -b
-		xss-lock -- i3lock -c000000 &
-		tilda &
+		picom -b
+		xss-lock -- ~/.local/bin/lock &
+		guake &
 		xxkb &
 		nm-applet &
+		udiskie -t &
+        redshift-gtk &
+        kdeconnect-indicator &
+
+		firefox &
+		telegram-desktop &
 		;;
 esac
 
 eval `ssh-agent -s`; ssh-add < /dev/null
 
-exec $DESKTOP_SESSION
+# exec $DESKTOP_SESSION
