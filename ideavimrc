@@ -29,6 +29,8 @@
 :vnoremap gc :action CommentByLineComment<CR>
 :vnoremap gr :action RefactoringMenu<CR>
 :nnoremap gr :action RefactoringMenu<CR>
+:nnoremap gb :action Bookmarks<CR>
+:vnoremap gb :action Bookmarks<CR>
 
 " Insert after word
 :nnoremap I wi
