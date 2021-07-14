@@ -4,7 +4,7 @@ setopt histignorespace
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/usr/share/oh-my-zsh
+export ZSH="$HOME/.local/share/oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -79,13 +79,12 @@ VIRTUALZ_HOME="$HOME/.venv"
 plugins=(
     git
     ansible
-    pyenv
     virtualz
     git
     colored-man-pages
     zsh-autosuggestions
     zsh-syntax-highlighting
-    calc
+    bgnotify
 )
 
 source $ZSH/oh-my-zsh.sh
