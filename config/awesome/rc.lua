@@ -227,9 +227,11 @@ root.buttons(my_table.join(
 -- {{{ Key bindings
 globalkeys = my_table.join(
     -- Take a screenshot
-    -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ }, "Print", function() awful.spawn("flameshot gui") end,
+    awful.key({ }, "Print", function() awful.spawn.with_shell("mkdir -p ~/Pictures/Screenshots; flameshot gui -p ~/Pictures/Screenshots") end,
               {description = "take a screenshot", group = "hotkeys"}),
+
+    awful.key({ modkey }, "Print", function() awful.spawn("flameshot launcher") end,
+              {description = "take a screenshot (with options)", group = "hotkeys"}),
 
     -- X screen locker
     awful.key({ altkey, "Control" }, "l", function () awful.spawn.with_shell(scrlocker) end,
@@ -779,9 +781,9 @@ awful.rules.rules = {
     { rule = { class = "Zathura" },
           properties = { maximized = true } },
 
-    -- Vivaldi -> [1]
-    { rule = { class = "vivaldi-stable" },
-      properties = { screen = 1, tag = awful.util.tagnames[1] } },
+    { rule = { class = "TelegramDesktop" },
+      properties = { screen = 1, tag = awful.util.tagnames[2] } },
+
     -- Slack   -> [3]
     { rule = { class = "Slack" },
       properties = { screen = 1, tag = awful.util.tagnames[3] } },
