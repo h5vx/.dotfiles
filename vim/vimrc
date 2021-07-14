@@ -6,9 +6,21 @@ call plug#begin('~/.vim/plugged')
 Plug 'wincent/terminus'
 Plug 'airblade/vim-gitgutter'
 
+" Python support
+Plug 'davidhalter/jedi-vim'
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+
+" Go
+Plug 'fatih/vim-go'
+
 call plug#end()
 
 :let mapleader = " "
+
+let g:pymode = 1
+let g:pymode_options_max_line_length = 119
+let g:pymode_options_colorcolumn = 0
+let g:pymode_trim_whitespaces = 1
 
 " Use 4 spaces instead of tabs
 set noswapfile
@@ -41,6 +53,17 @@ inoremap <M-k> <Esc>:m .-2<CR>==gi
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
 
+nnoremap <Leader>w <C-W>
+
+" Exporer 
+vnoremap <A-1> :vs.<CR>
+
+" Copy/Paste to system clipboard
+nnoremap <silent> <Leader>y :w !xclip -i -sel c<CR>
+vnoremap <silent> <Leader>y :w !xclip -i -sel c<CR>
+nnoremap <silent> <Leader>p :r !xclip -o -sel c<CR>
+vnoremap <silent> <Leader>p :r !xclip -o -sel c<CR>
+
 " Disable GUI menus
 :let did_install_default_menus = 1
 :let did_install_syntax_menu = 1
@@ -60,3 +83,4 @@ highlight GitGutterDelete guifg=#ff2222 ctermbg=black ctermfg=red
 let g:gitgutter_sign_added = '█'
 let g:gitgutter_sign_modified = '█'
 let g:gitgutter_sign_removed = '█'
+
