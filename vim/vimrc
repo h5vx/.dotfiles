@@ -1,10 +1,22 @@
 unlet! skip_defaults_vim
-source $VIMRUNTIME/defaults.vim
 
+if !has('nvim')
+    source $VIMRUNTIME/defaults.vim
+endif
+
+set encoding=UTF-8
+
+
+" =========================[      Plugins     ]=========================
 call plug#begin('~/.vim/plugged')
 
+Plug 'jeetsukumaran/vim-buffergator'
+
 Plug 'wincent/terminus'
+
+" Git integration
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
 " Python support
 Plug 'davidhalter/jedi-vim'
@@ -13,9 +25,63 @@ Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 " Go
 Plug 'fatih/vim-go'
 
-call plug#end()
+" Markdown Table Of Contents
+Plug 'mzlogin/vim-markdown-toc'
 
-:let mapleader = " "
+" Multiple cursors
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+" Crystal lang support
+Plug 'vim-crystal/vim-crystal'
+
+" Gruvbox colorscheme
+Plug 'gruvbox-community/gruvbox'
+Plug 'sainnhe/gruvbox-material'
+
+Plug 'vim-airline/vim-airline'
+
+Plug 'ianding1/leetcode.vim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'ryanoasis/vim-devicons'
+
+let g:leetcode_browser = 'firefox'
+let g:leetcode_solution_filetype = 'python'
+let g:leetcode_hide_paid_only = 1
+
+call plug#end()
+" ----------------------------------------------------------------------
+
+
+" =========================[      NERDTree    ]=========================
+" Open the existing NERDTree on each new tab.
+" autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+let NERDTreeIgnore = ['\.pyc$', '^__pycache__$']
+
+function! IsNTFocused()
+  return bufname() == t:NERDTreeBufName
+endfunction
+
+function! NTFocusOrToggle()
+    if IsNTFocused()
+        NERDTreeToggle
+    else
+        NERDTreeFind
+        normal! zz
+    endif
+endfunction
+
+nnoremap <Esc>1 :call NTFocusOrToggle()<CR>
+nnoremap <A-1> :call NTFocusOrToggle()<CR>
+" ----------------------------------------------------------------------
+
+if !has('nvim')
+    set termwinkey=<ESC>
+endif
+
+let mapleader = " "
 
 let g:pymode = 1
 let g:pymode_options_max_line_length = 119
@@ -46,23 +112,37 @@ set number
 :nnoremap # #zz
 
 " Move lines up/down
-nnoremap <M-j> :m .+1<CR>==
-nnoremap <M-k> :m .-2<CR>==
-inoremap <M-j> <Esc>:m .+1<CR>==gi
-inoremap <M-k> <Esc>:m .-2<CR>==gi
-vnoremap <M-j> :m '>+1<CR>gv=gv
-vnoremap <M-k> :m '<-2<CR>gv=gv
+"nnoremap <Esc>j :m .+1<CR>==
+"nnoremap <Esc>k :m .-2<CR>==
+"vnoremap <Esc>j :m '>+1<CR>gv=gv
+"vnoremap <Esc>k :m '<-2<CR>gv=gv
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" Moving in history
+nnoremap H <C-O>
+nnoremap L <C-I>
 
 nnoremap <Leader>w <C-W>
-
-" Exporer 
-vnoremap <A-1> :vs.<CR>
+nnoremap Q :q<CR>
 
 " Copy/Paste to system clipboard
 nnoremap <silent> <Leader>y :w !xclip -i -sel c<CR>
-vnoremap <silent> <Leader>y :w !xclip -i -sel c<CR>
+vnoremap <silent> <Leader>y :'<,'>w !xclip -i -sel c<CR>
 nnoremap <silent> <Leader>p :r !xclip -o -sel c<CR>
 vnoremap <silent> <Leader>p :r !xclip -o -sel c<CR>
+
+nnoremap <C-s> :w<CR>
+
+" FZF
+nnoremap <Leader>f :GFiles<CR>
+nnoremap <Leader>h :History/<CR>
+nnoremap <Leader>: :History:<CR>
+nnoremap <Esc>e :Buffers<CR>
+nnoremap <A-e> :Buffers<CR>
+nnoremap <C-F> :Ag<CR>
 
 " Disable GUI menus
 :let did_install_default_menus = 1
@@ -75,12 +155,33 @@ vnoremap <silent> <Leader>p :r !xclip -o -sel c<CR>
 " Reduce update latency, default is 4000
 :set updatetime=100
 
+:nnoremap <F2> :tabedit ~/.vim/vimrc<CR>
+
+" Vim config autoreload
+autocmd! bufwritepost vimrc source %
+
+
+" =========================[       Theme      ]=========================
 " GitGutter settings
 highlight SignColumn      guibg=black ctermbg=black
-highlight GitGutterAdd    guifg=#009900 ctermbg=black ctermfg=lightgreen
-highlight GitGutterChange guifg=#bbbb00 ctermbg=black ctermfg=yellow
+highlight GitGutterAdd    guifg=#448811 ctermbg=black ctermfg=green
+highlight GitGutterChange guifg=#dddd00 ctermbg=black ctermfg=yellow
 highlight GitGutterDelete guifg=#ff2222 ctermbg=black ctermfg=red
 let g:gitgutter_sign_added = '█'
 let g:gitgutter_sign_modified = '█'
 let g:gitgutter_sign_removed = '█'
 
+let g:gruvbox_contrast_dark = "medium"
+let g:gruvbox_material_background = "medium"
+let g:gruvbox_material_transparent_background = 1
+let g:gruvbox_transparent_bg=1
+set bg=dark
+
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'gruvbox_material'
+
+" GNvim
+set guicursor+=a:blinkon300
+
+colorscheme gruvbox-material
+" ----------------------------------------------------------------------
