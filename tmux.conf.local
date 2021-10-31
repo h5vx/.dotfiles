@@ -19,7 +19,7 @@
 # new window retains current path, possible values are:
 #   - true
 #   - false (default)
-tmux_conf_new_window_retain_current_path=false
+tmux_conf_new_window_retain_current_path=true
 
 # new pane retains current path, possible values are:
 #   - true (default)
@@ -297,3 +297,10 @@ bind C-b send-prefix
 
 # toggle copy-mode by <prefix> C-u
 bind -T prefix C-u copy-mode -u
+
+# toggle status bar
+bind -T prefix S set -g status
+
+# Fix true colors
+set -g default-terminal "tmux-256color"
+set-option -ga terminal-overrides ",tmux-256color:Tc,xterm-256color:Tc"
