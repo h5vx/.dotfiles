@@ -17,6 +17,21 @@ prompt spaceship
 
 SPACESHIP_CHAR_SYMBOL=" "
 
+
+# Customize notification and add sound for bgnotify plugin
+function bgnotify_formatted { ## args: (exit_status, command, elapsed_seconds)
+    elapsed="$(( $3 % 60 ))s"
+    (( $3 >= 60 )) && elapsed="$((( $3 % 3600) / 60 ))m $elapsed"
+    (( $3 >= 3600 )) && elapsed="$(( $3 / 3600 ))h $elapsed"
+    [ $1 -eq 0 ] && {
+        bgnotify "✅ win (took $elapsed)" "$2"
+        paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+    } || {
+        bgnotify "❌ fail (took $elapsed)" "$2"
+        paplay /usr/share/sounds/freedesktop/stereo/dialog-error.oga
+    }
+}
+
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -88,6 +103,8 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+source /usr/share/nvm/init-nvm.sh
 
 # User configuration
 
