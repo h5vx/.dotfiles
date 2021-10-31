@@ -227,11 +227,20 @@ root.buttons(my_table.join(
 -- {{{ Key bindings
 globalkeys = my_table.join(
     -- Take a screenshot
-    awful.key({ }, "Print", function() awful.spawn.with_shell("mkdir -p ~/Pictures/Screenshots; flameshot gui -p ~/Pictures/Screenshots") end,
-              {description = "take a screenshot", group = "hotkeys"}),
+    awful.key({ }, "Print", function() 
+        awful.spawn.with_shell("mkdir -p ~/Pictures/Screenshots; flameshot gui -p ~/Pictures/Screenshots") 
+    end, {description = "take a screenshot", group = "hotkeys"}),
 
     awful.key({ modkey }, "Print", function() awful.spawn("flameshot launcher") end,
               {description = "take a screenshot (with options)", group = "hotkeys"}),
+
+    awful.key({ "Shift" }, "Print", function() 
+        awful.spawn.with_shell([[
+            mkdir -p ~/Pictures/Screenshots
+            wclass=$(xdotool getactivewindow getwindowclassname)
+            scrot -u "$HOME/Pictures/Screenshots/${wclass}_%Y-%m-%d_%H-%M.png"
+        ]])
+    end, {description = "Screenshot active window", group = "hotkeys"}),
 
     -- X screen locker
     awful.key({ altkey, "Control" }, "l", function () awful.spawn.with_shell(scrlocker) end,
@@ -573,7 +582,7 @@ globalkeys = my_table.join(
               {description = "run gui editor", group = "launcher"}),
     --]]
     -- File browser
-    awful.key({ modkey }, "f", function () awful.spawn('rofi -show file-browser') end,
+    awful.key({ modkey }, "f", function () awful.spawn('rofi -show file-browser-extended') end,
       {description = "file browser", group = "launcher"}),
 
     -- Default
@@ -626,8 +635,10 @@ globalkeys = my_table.join(
 )
 
 clientkeys = my_table.join(
-    awful.key({ modkey, "Shift"   }, "m",      lain.util.magnify_client,
-              {description = "magnify client", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "m",      function(c)
+        c.maximized = false
+        lain.util.magnify_client(c)
+    end, {description = "magnify client", group = "client"}),
     awful.key({ modkey,           }, "f",
         function (c)
             c.fullscreen = not c.fullscreen

@@ -233,21 +233,21 @@ local batbg = wibox.container.background(batbar, "#474747", gears.shape.rectangl
 local batwidget = wibox.container.margin(batbg, 2, 7, 4, 4)
 
 -- /home fs
---[[ commented because it needs Gio/Glib >= 2.54
+--[-[ commented because it needs Gio/Glib >= 2.54
 local fsicon = wibox.widget.imagebox(theme.disk)
 local fsbar = wibox.widget {
     forced_height    = 1,
-    forced_width     = 59,
+    forced_width     = 59 * theme.size_multiplier,
     color            = theme.fg_normal,
     background_color = theme.bg_normal,
     margins          = 1,
     paddings         = 1,
     ticks            = true,
-    ticks_size       = 6,
+    ticks_size       = 6 * theme.size_multiplier + 2,
     widget           = wibox.widget.progressbar,
 }
 theme.fs = lain.widget.fs {
-    notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = "Misc Tamsyn 10.5" },
+    notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = theme.widget_font },
     settings  = function()
         if fs_now["/home"].percentage < 90 then
             fsbar:set_color(theme.fg_normal)
@@ -405,8 +405,8 @@ function theme.at_screen_connect(s)
             memory,
             swap_label,
             swap,
-            --fsicon,
-            --fswidget,
+            fsicon,
+            fswidget,
             -- bar_spr,
             baticon,
             batwidget,
