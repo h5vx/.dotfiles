@@ -10,20 +10,54 @@ set encoding=UTF-8
 " =========================[      Plugins     ]=========================
 call plug#begin('~/.vim/plugged')
 
+Plug 'lambdalisue/suda.vim'
+let g:suda_smart_edit = 1
+
 Plug 'jeetsukumaran/vim-buffergator'
 
 Plug 'wincent/terminus'
 
+Plug 'voldikss/vim-floaterm'
+let g:floaterm_wintype = "float"
+let g:floaterm_position = "bottom"
+let g:floaterm_height = 0.4
+let g:floaterm_width = 1.0
+let g:floaterm_borderchars = ""
+let g:floaterm_keymap_toggle = '<A-t>'
+
 " Git integration
 Plug 'airblade/vim-gitgutter'
+highlight SignColumn      guibg=black ctermbg=black
+highlight GitGutterAdd    guifg=#448811 ctermbg=black ctermfg=green
+highlight GitGutterChange guifg=#dddd00 ctermbg=black ctermfg=yellow
+highlight GitGutterDelete guifg=#ff2222 ctermbg=black ctermfg=red
+" Uncool:  ⭘   ⏽    
+" Cool:  
+let g:gitgutter_sign_added = ''
+let g:gitgutter_sign_modified = ''
+let g:gitgutter_sign_removed = ''
+let g:gitgutter_sign_modified_removed = ''
+
+
 Plug 'tpope/vim-fugitive'
 
 " Python support
 Plug 'davidhalter/jedi-vim'
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 
+Plug 'mgedmin/python-imports.vim'
+map gi :ImportName<CR>
+
+Plug 'vim-syntastic/syntastic'
+Plug 'fisadev/vim-isort'
+
+Plug 'psf/black', { 'branch': 'stable' }
+let g:black_quiet = 1
+
 " Go
 Plug 'fatih/vim-go'
+
+Plug 'jmcantrell/vim-virtualenv'
 
 " Markdown Table Of Contents
 Plug 'mzlogin/vim-markdown-toc'
@@ -41,15 +75,17 @@ Plug 'sainnhe/gruvbox-material'
 Plug 'vim-airline/vim-airline'
 
 Plug 'ianding1/leetcode.vim'
+let g:leetcode_browser = 'firefox'
+let g:leetcode_solution_filetype = 'python'
+let g:leetcode_hide_paid_only = 1
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 Plug 'ryanoasis/vim-devicons'
 
-let g:leetcode_browser = 'firefox'
-let g:leetcode_solution_filetype = 'python'
-let g:leetcode_hide_paid_only = 1
+Plug 'easymotion/vim-easymotion'
+map <Bslash> <Plug>(easymotion-prefix)
 
 call plug#end()
 " ----------------------------------------------------------------------
@@ -61,7 +97,7 @@ call plug#end()
 let NERDTreeIgnore = ['\.pyc$', '^__pycache__$']
 
 function! IsNTFocused()
-  return bufname() == t:NERDTreeBufName
+  return exists("t:NERDTreeBufName") && bufname() == t:NERDTreeBufName
 endfunction
 
 function! NTFocusOrToggle()
@@ -112,19 +148,31 @@ set number
 :nnoremap # #zz
 
 " Move lines up/down
-"nnoremap <Esc>j :m .+1<CR>==
-"nnoremap <Esc>k :m .-2<CR>==
-"vnoremap <Esc>j :m '>+1<CR>gv=gv
-"vnoremap <Esc>k :m '<-2<CR>gv=gv
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+nnoremap <C-A-j> :m .+1<CR>==
+nnoremap <C-A-k> :m .-2<CR>==
+vnoremap <C-A-j> :m '>+1<CR>gv=gv
+vnoremap <C-A-k> :m '<-2<CR>gv=gv
+
+:tnoremap <A-h> <C-\><C-N><C-w>h
+:tnoremap <A-j> <C-\><C-N><C-w>j
+:tnoremap <A-k> <C-\><C-N><C-w>k
+:tnoremap <A-l> <C-\><C-N><C-w>l
+:inoremap <A-h> <C-\><C-N><C-w>h
+:inoremap <A-j> <C-\><C-N><C-w>j
+:inoremap <A-k> <C-\><C-N><C-w>k
+:inoremap <A-l> <C-\><C-N><C-w>l
+:nnoremap <A-h> <C-w>h
+:nnoremap <A-j> <C-w>j
+:nnoremap <A-k> <C-w>k
+:nnoremap <A-l> <C-w>l
+
+:nnoremap <F1> :Helptags<CR>
 
 " Moving in history
 nnoremap H <C-O>
 nnoremap L <C-I>
 
+set noequalalways  " Don't resize windows after closing split
 nnoremap <Leader>w <C-W>
 nnoremap Q :q<CR>
 
@@ -140,6 +188,7 @@ nnoremap <C-s> :w<CR>
 nnoremap <Leader>f :GFiles<CR>
 nnoremap <Leader>h :History/<CR>
 nnoremap <Leader>: :History:<CR>
+nmap <Leader>b :Buffers<CR>
 nnoremap <Esc>e :Buffers<CR>
 nnoremap <A-e> :Buffers<CR>
 nnoremap <C-F> :Ag<CR>
@@ -160,17 +209,32 @@ nnoremap <C-F> :Ag<CR>
 " Vim config autoreload
 autocmd! bufwritepost vimrc source %
 
+autocmd BufWritePre *.py execute ':Black'
+
+
+" Difftool
+function! DiffGet(direction)
+    let bufnr = winbufnr(winnr(a:direction))
+    exe "diffget " . bufnr
+endfunction
+
+nnoremap <Leader>dh :call DiffGet("1h")<CR>
+nnoremap <Leader>dl :call DiffGet("1l")<CR>
+
+" =========================[     Terminal     ]=========================
+augroup neovim_terminal
+    autocmd!
+    " Enter Terminal-mode (insert) automatically
+    autocmd TermOpen * startinsert
+    " Disables number lines on terminal buffers
+    autocmd TermOpen * :set nonumber norelativenumber
+    " allows you to use Ctrl-c on terminal window
+    autocmd TermOpen * nnoremap <buffer> <C-c> i<C-c>
+augroup END
+
+:tnoremap <C-Space> <C-\><C-n><C-w><C-w>
 
 " =========================[       Theme      ]=========================
-" GitGutter settings
-highlight SignColumn      guibg=black ctermbg=black
-highlight GitGutterAdd    guifg=#448811 ctermbg=black ctermfg=green
-highlight GitGutterChange guifg=#dddd00 ctermbg=black ctermfg=yellow
-highlight GitGutterDelete guifg=#ff2222 ctermbg=black ctermfg=red
-let g:gitgutter_sign_added = '█'
-let g:gitgutter_sign_modified = '█'
-let g:gitgutter_sign_removed = '█'
-
 let g:gruvbox_contrast_dark = "medium"
 let g:gruvbox_material_background = "medium"
 let g:gruvbox_material_transparent_background = 1
@@ -180,8 +244,21 @@ set bg=dark
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'gruvbox_material'
 
-" GNvim
-set guicursor+=a:blinkon300
-
 colorscheme gruvbox-material
+
+" =========================[    GUI Config    ]=========================
+set guicursor+=a:blinkon300  " GNvim
+
+"let g:neovide_transparency = 0.9
+"let g:neovide_cursor_vfx_theme = "sonicboom"
+
+let s:fontsize = 10
+function! AdjustFontSize(amount)
+  let s:fontsize = s:fontsize+a:amount
+  let &guifont = "Jetbrains\ Mono:h" . s:fontsize
+endfunction
+call AdjustFontSize(0)
+
+nnoremap <C-+> :call AdjustFontSize(1)<CR>
+nnoremap <C-_> :call AdjustFontSize(-1)<CR>
 " ----------------------------------------------------------------------
