@@ -18,7 +18,7 @@ Plug 'jeetsukumaran/vim-buffergator'
 Plug 'wincent/terminus'
 
 Plug 'voldikss/vim-floaterm'
-let g:floaterm_wintype = "float"
+let g:floaterm_wintype = "split"
 let g:floaterm_position = "bottom"
 let g:floaterm_height = 0.4
 let g:floaterm_width = 1.0
@@ -41,6 +41,9 @@ let g:gitgutter_sign_modified_removed = ''
 
 Plug 'tpope/vim-fugitive'
 
+Plug 'jiangmiao/auto-pairs'
+Plug 'scrooloose/nerdcommenter'
+
 " Python support
 Plug 'davidhalter/jedi-vim'
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
@@ -56,6 +59,9 @@ let g:black_quiet = 1
 
 " Go
 Plug 'fatih/vim-go'
+
+" PHP
+Plug 'vim-vdebug/vdebug'
 
 Plug 'jmcantrell/vim-virtualenv'
 
@@ -73,6 +79,7 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'sainnhe/gruvbox-material'
 
 Plug 'vim-airline/vim-airline'
+let g:airline#extensions#tabline#enabled = 1
 
 Plug 'ianding1/leetcode.vim'
 let g:leetcode_browser = 'firefox'
@@ -81,6 +88,14 @@ let g:leetcode_hide_paid_only = 1
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+Plug 'dominikduda/vim_current_word'
+let g:vim_current_word#highlight_current_word = 1
+let g:vim_current_word#highlight_only_in_focused_window = 1
+autocmd BufAdd NERD_tree_* :let b:vim_current_word_disabled_in_this_buffer = 1
 
 Plug 'ryanoasis/vim-devicons'
 
@@ -109,7 +124,6 @@ function! NTFocusOrToggle()
     endif
 endfunction
 
-nnoremap <Esc>1 :call NTFocusOrToggle()<CR>
 nnoremap <A-1> :call NTFocusOrToggle()<CR>
 " ----------------------------------------------------------------------
 
@@ -131,10 +145,10 @@ set noswapfile
 set ignorecase
 
 " Enable search highlighting
-:set hlsearch
+set hlsearch
 
 " Clear search highlighting
-:nnoremap <Esc><Esc> :noh<CR>
+nnoremap <Leader><Esc> :noh<CR>
 
 set expandtab               " Use 4 spaces instead of tabs
 set tabstop=4
@@ -144,8 +158,8 @@ set shiftwidth=4
 set number
 
 " Next/Prev token with screen centering
-:nnoremap * *zz
-:nnoremap # #zz
+nnoremap * *zz
+nnoremap # #zz
 
 " Move lines up/down
 nnoremap <C-A-j> :m .+1<CR>==
@@ -153,20 +167,18 @@ nnoremap <C-A-k> :m .-2<CR>==
 vnoremap <C-A-j> :m '>+1<CR>gv=gv
 vnoremap <C-A-k> :m '<-2<CR>gv=gv
 
-:tnoremap <A-h> <C-\><C-N><C-w>h
-:tnoremap <A-j> <C-\><C-N><C-w>j
-:tnoremap <A-k> <C-\><C-N><C-w>k
-:tnoremap <A-l> <C-\><C-N><C-w>l
-:inoremap <A-h> <C-\><C-N><C-w>h
-:inoremap <A-j> <C-\><C-N><C-w>j
-:inoremap <A-k> <C-\><C-N><C-w>k
-:inoremap <A-l> <C-\><C-N><C-w>l
-:nnoremap <A-h> <C-w>h
-:nnoremap <A-j> <C-w>j
-:nnoremap <A-k> <C-w>k
-:nnoremap <A-l> <C-w>l
-
-:nnoremap <F1> :Helptags<CR>
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 
 " Moving in history
 nnoremap H <C-O>
@@ -184,30 +196,34 @@ vnoremap <silent> <Leader>p :r !xclip -o -sel c<CR>
 
 nnoremap <C-s> :w<CR>
 
-" FZF
-nnoremap <Leader>f :GFiles<CR>
+" Search / FZF
+nnoremap <Leader>f <cmd>Telescope find_files<CR>
 nnoremap <Leader>h :History/<CR>
 nnoremap <Leader>: :History:<CR>
-nmap <Leader>b :Buffers<CR>
-nnoremap <Esc>e :Buffers<CR>
+nmap <Leader>b <cmd>Telescope buffers<CR>
+nnoremap <F1> :Telescope help_tags<CR>
 nnoremap <A-e> :Buffers<CR>
-nnoremap <C-F> :Ag<CR>
+nnoremap <C-F> :Telescope live_grep<CR>
+vnoremap <C-F> :Telescope grep_string<CR>
 
 " Disable GUI menus
-:let did_install_default_menus = 1
-:let did_install_syntax_menu = 1
+let did_install_default_menus = 1
+let did_install_syntax_menu = 1
 
 " Display some whitespace characters
-:set list
-:set listchars=tab:→\ ,trail:·,nbsp:⎵
+set list
+set listchars=tab:→\ ,trail:·,nbsp:⎵
 
 " Reduce update latency, default is 4000
-:set updatetime=100
+set updatetime=100
 
-:nnoremap <F2> :tabedit ~/.vim/vimrc<CR>
+set splitright
+
+nnoremap <F2> :tabedit ~/.vim/vimrc<CR>
 
 " Vim config autoreload
 autocmd! bufwritepost vimrc source %
+autocmd! bufwritepost vimrc AirlineRefresh
 
 autocmd BufWritePre *.py execute ':Black'
 
@@ -232,13 +248,22 @@ augroup neovim_terminal
     autocmd TermOpen * nnoremap <buffer> <C-c> i<C-c>
 augroup END
 
-:tnoremap <C-Space> <C-\><C-n><C-w><C-w>
+tnoremap <C-Space> <C-\><C-n><C-w><C-w>
 
 " =========================[       Theme      ]=========================
 let g:gruvbox_contrast_dark = "medium"
-let g:gruvbox_material_background = "medium"
+let g:gruvbox_material_background = "soft"
+let g:gruvbox_material_ui_contrast = "high"
+let g:gruvbox_material_cursor = "purple"
+let g:gruvbox_material_show_eob = 0
+let g:gruvbox_material_diagnostic_line_highlight = 1
 let g:gruvbox_material_transparent_background = 1
 let g:gruvbox_transparent_bg=1
+let g:gruvbox_material_visual = 'red background'
+let g:gruvbox_material_current_word='grey background'
+let g:gruvbox_material_statusline_style = 'original'
+let g:gruvbox_material_palette = 'mix'
+
 set bg=dark
 
 let g:airline_powerline_fonts = 1
@@ -251,8 +276,9 @@ set guicursor+=a:blinkon300  " GNvim
 
 "let g:neovide_transparency = 0.9
 "let g:neovide_cursor_vfx_theme = "sonicboom"
+let g:neovide_floating_blur = 0
 
-let s:fontsize = 10
+let s:fontsize = 8
 function! AdjustFontSize(amount)
   let s:fontsize = s:fontsize+a:amount
   let &guifont = "Jetbrains\ Mono:h" . s:fontsize
@@ -262,3 +288,17 @@ call AdjustFontSize(0)
 nnoremap <C-+> :call AdjustFontSize(1)<CR>
 nnoremap <C-_> :call AdjustFontSize(-1)<CR>
 " ----------------------------------------------------------------------
+
+" packadd nvim-treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
