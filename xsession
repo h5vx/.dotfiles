@@ -2,9 +2,10 @@
 
 case "${DESKTOP_SESSION-}" in
 	awesome|dwm)
+        wired -r &
 		/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 		picom -b
-		xss-lock -- ~/.local/bin/lock &
+		#xss-lock -- ~/.local/bin/lock &
 		guake &
 		xxkb &
 		nm-applet &
@@ -14,6 +15,8 @@ case "${DESKTOP_SESSION-}" in
 
 		firefox &
 		telegram-desktop &
+
+        syndaemon -i 1 -k -K -R -d
 		;;
 esac
 
