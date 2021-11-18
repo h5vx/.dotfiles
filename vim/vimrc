@@ -33,7 +33,7 @@ let g:floaterm_borderchars = "─│─│╭╮╯╰"
 let g:floaterm_keymap_toggle = '<A-t>'
 
 " Not working :(
-highlight FloatermBorder guibg=black ctermbg=black
+highlight FloatermBorder guibg=#000000 ctermbg=black
 
 " Git integration
 Plug 'airblade/vim-gitgutter'
@@ -54,6 +54,18 @@ Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 let g:AutoPairsShortcutBackInsert=""
 Plug 'scrooloose/nerdcommenter'
+
+" Project tree
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/fern-hijack.vim'
+
+let g:fern#renderer = "nerdfont"
+let g:fern#default_exclude = '^\%(__pycache__\|.*\.pyc\)$'
+let g:fern#hide_cursor = 1
+
+nnoremap <A-1> <cmd>Fern -drawer . -reveal=%s -toggle<CR>
 
 " Python support
 Plug 'davidhalter/jedi-vim'
@@ -85,11 +97,15 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 " Crystal lang support
 Plug 'vim-crystal/vim-crystal'
 
-" Gruvbox colorscheme
+" Colorschemes
 Plug 'gruvbox-community/gruvbox'
 Plug 'sainnhe/gruvbox-material'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'ray-x/aurora'
+Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
 
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1
 
 Plug 'ianding1/leetcode.vim'
@@ -107,7 +123,16 @@ Plug 'nvim-telescope/telescope-project.nvim'
 Plug 'dominikduda/vim_current_word'
 let g:vim_current_word#highlight_current_word = 1
 let g:vim_current_word#highlight_only_in_focused_window = 1
-autocmd! BufAdd NERD_tree_* :let b:vim_current_word_disabled_in_this_buffer = 1
+
+function! s:init_fern() abort
+  let b:vim_current_word_disabled_in_this_buffer = 1
+  set nonumber
+endfunction
+
+augroup my-fern
+  autocmd! *
+  autocmd FileType fern call s:init_fern()
+augroup END
 
 Plug 'ryanoasis/vim-devicons'
 
@@ -119,27 +144,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 call plug#end()
 " ----------------------------------------------------------------------
 
-
-" =========================[      NERDTree    ]=========================
-" Open the existing NERDTree on each new tab.
-" autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
-let NERDTreeIgnore = ['\.pyc$', '^__pycache__$']
-
-function! IsNTFocused()
-  return exists("t:NERDTreeBufName") && bufname() == t:NERDTreeBufName
-endfunction
-
-function! NTFocusOrToggle()
-    if IsNTFocused()
-        NERDTreeToggle
-    else
-        NERDTreeFind
-        normal! zz
-    endif
-endfunction
-
-nnoremap <A-1> :call NTFocusOrToggle()<CR>
-" ----------------------------------------------------------------------
 
 if !has('nvim')
     set termwinkey=<ESC>
@@ -297,18 +301,23 @@ let g:gruvbox_material_palette = 'mix'
 set bg=dark
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'gruvbox_material'
+let g:airline_theme = 'violet'
 
-colorscheme gruvbox-material
+colorscheme embark
 
 " =========================[    GUI Config    ]=========================
+set termguicolors
 set guicursor+=a:blinkon300  " GNvim
 
-"let g:neovide_transparency = 0.9
+set noshowmode
 let g:neovide_cursor_vfx_theme = "sonicboom"
 let g:neovide_floating_blur = 0
+let g:neovide_cursor_animate_command_line = 0
 
-let s:fontsize = 8
+if !exists("s:fontsize")
+    let s:fontsize = 10
+endif
+
 function! AdjustFontSize(amount)
   let s:fontsize = s:fontsize+a:amount
   let &guifont = "Jetbrains\ Mono:h" . s:fontsize
