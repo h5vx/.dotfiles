@@ -6,6 +6,12 @@ endif
 
 set encoding=UTF-8
 
+:set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
+inoremap <C-ц> <C-w>
+
+" Custom filetypes
+au BufRead,BufNewFile *.ron  set filetype=rust
+au BufRead,BufNewFile *.ejs  set filetype=javascript
 
 " =========================[      Plugins     ]=========================
 call plug#begin('~/.vim/plugged')
@@ -18,12 +24,16 @@ Plug 'jeetsukumaran/vim-buffergator'
 Plug 'wincent/terminus'
 
 Plug 'voldikss/vim-floaterm'
-let g:floaterm_wintype = "split"
+" let g:floaterm_wintype = "split"
+let g:floaterm_title = "   $1 / $2 "
 let g:floaterm_position = "bottom"
 let g:floaterm_height = 0.4
 let g:floaterm_width = 1.0
-let g:floaterm_borderchars = ""
+let g:floaterm_borderchars = "─│─│╭╮╯╰"
 let g:floaterm_keymap_toggle = '<A-t>'
+
+" Not working :(
+highlight FloatermBorder guibg=black ctermbg=black
 
 " Git integration
 Plug 'airblade/vim-gitgutter'
@@ -34,14 +44,15 @@ highlight GitGutterDelete guifg=#ff2222 ctermbg=black ctermfg=red
 " Uncool:  ⭘   ⏽    
 " Cool:  
 let g:gitgutter_sign_added = ''
-let g:gitgutter_sign_modified = ''
-let g:gitgutter_sign_removed = ''
-let g:gitgutter_sign_modified_removed = ''
+let g:gitgutter_sign_modified = ''
+let g:gitgutter_sign_removed = ''
+let g:gitgutter_sign_modified_removed = ''
 
 
 Plug 'tpope/vim-fugitive'
 
 Plug 'jiangmiao/auto-pairs'
+let g:AutoPairsShortcutBackInsert=""
 Plug 'scrooloose/nerdcommenter'
 
 " Python support
@@ -91,16 +102,19 @@ Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-telescope/telescope-project.nvim'
 
 Plug 'dominikduda/vim_current_word'
 let g:vim_current_word#highlight_current_word = 1
 let g:vim_current_word#highlight_only_in_focused_window = 1
-autocmd BufAdd NERD_tree_* :let b:vim_current_word_disabled_in_this_buffer = 1
+autocmd! BufAdd NERD_tree_* :let b:vim_current_word_disabled_in_this_buffer = 1
 
 Plug 'ryanoasis/vim-devicons'
 
 Plug 'easymotion/vim-easymotion'
 map <Bslash> <Plug>(easymotion-prefix)
+
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 call plug#end()
 " ----------------------------------------------------------------------
@@ -189,22 +203,39 @@ nnoremap <Leader>w <C-W>
 nnoremap Q :q<CR>
 
 " Copy/Paste to system clipboard
-nnoremap <silent> <Leader>y :w !xclip -i -sel c<CR>
-vnoremap <silent> <Leader>y :'<,'>w !xclip -i -sel c<CR>
-nnoremap <silent> <Leader>p :r !xclip -o -sel c<CR>
-vnoremap <silent> <Leader>p :r !xclip -o -sel c<CR>
+nnoremap <Leader>y "+y
+vnoremap <Leader>y "+y
+nnoremap <Leader>p "+p
+vnoremap <Leader>p "+p
 
 nnoremap <C-s> :w<CR>
 
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-j> <Down>
+inoremap <C-h> <Left>
+inoremap <C-l> <Up>
+inoremap <A-f> <C-right>
+imap <A-b> <C-left>
+
 " Search / FZF
 nnoremap <Leader>f <cmd>Telescope find_files<CR>
-nnoremap <Leader>h :History/<CR>
 nnoremap <Leader>: :History:<CR>
+nnoremap <Leader>/ <cmd>Telescope search_history<CR>
 nmap <Leader>b <cmd>Telescope buffers<CR>
-nnoremap <F1> :Telescope help_tags<CR>
-nnoremap <A-e> :Buffers<CR>
-nnoremap <C-F> :Telescope live_grep<CR>
-vnoremap <C-F> :Telescope grep_string<CR>
+nnoremap <F1> <cmd>Telescope help_tags<CR>
+nnoremap <A-e> <cmd>Buffers<CR>
+nnoremap <C-F> <cmd>Telescope live_grep<CR>
+vnoremap <C-F> <cmd>Telescope grep_string<CR>
+nnoremap <C-p> <cmd>Telescope treesitter<CR>
+nnoremap <leader>s <cmd>Telescope project<CR>
+nnoremap <leader><C-n> <cmd>Tags<CR>
+nnoremap gf <cmd>execute("Tags " . expand('<cword>'))<CR>
+
+nnoremap <Leader>G <cmd>G<CR>
+nnoremap <Leader>Gb <cmd>Telescope git_branches<CR>
+nnoremap <Leader>Gp <cmd>G pull<CR>
+nnoremap <Leader>Gk <cmd>G push<CR>
 
 " Disable GUI menus
 let did_install_default_menus = 1
@@ -222,10 +253,9 @@ set splitright
 nnoremap <F2> :tabedit ~/.vim/vimrc<CR>
 
 " Vim config autoreload
-autocmd! bufwritepost vimrc source %
-autocmd! bufwritepost vimrc AirlineRefresh
+autocmd! BufWritePost vimrc source % | AirlineRefresh
 
-autocmd BufWritePre *.py execute ':Black'
+autocmd! BufWritePre *.py execute ':Black'
 
 
 " Difftool
@@ -252,7 +282,7 @@ tnoremap <C-Space> <C-\><C-n><C-w><C-w>
 
 " =========================[       Theme      ]=========================
 let g:gruvbox_contrast_dark = "medium"
-let g:gruvbox_material_background = "soft"
+let g:gruvbox_material_background = "hard"
 let g:gruvbox_material_ui_contrast = "high"
 let g:gruvbox_material_cursor = "purple"
 let g:gruvbox_material_show_eob = 0
@@ -275,7 +305,7 @@ colorscheme gruvbox-material
 set guicursor+=a:blinkon300  " GNvim
 
 "let g:neovide_transparency = 0.9
-"let g:neovide_cursor_vfx_theme = "sonicboom"
+let g:neovide_cursor_vfx_theme = "sonicboom"
 let g:neovide_floating_blur = 0
 
 let s:fontsize = 8
@@ -301,4 +331,38 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+require('telescope').setup{
+    defaults = {
+    -- Default configuration for telescope goes here:
+    -- config_key = value,
+    -- ..
+    --  layout_strategy = "vertical",
+    --  winblend = 1,
+        prompt_prefix = '» ',
+        mappings = {
+            i = {
+                ["<C-j>"] = require('telescope.actions').select_default,
+                ["<C-J>"] = require('telescope.actions').select_tab,
+            },
+        },
+    },
+    pickers = {
+    -- Default configuration for builtin pickers goes here:
+    -- picker_name = {
+    --   picker_config_key = value,
+    --   ...
+    -- }
+    -- Now the picker_config_key will be applied every time you call this
+    -- builtin picker
+    },
+    extensions = {
+    -- Your extension configuration goes here:
+    -- extension_name = {
+    --   extension_config_key = value,
+    -- }
+    -- please take a look at the readme of the extension you want to configure
+    }
+}
+require'telescope'.load_extension('project')
 EOF
