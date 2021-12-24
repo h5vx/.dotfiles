@@ -1,5 +1,5 @@
 export TERMINAL=kitty
-export EDITOR=vim
+export EDITOR=nvim
 export WORKON_HOME=~/.venv
 
 # "less" pager configuration
