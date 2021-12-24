@@ -5,3 +5,16 @@ include "/usr/share/X11/locale/en_US.UTF-8/Compose"
 <Multi_key> <slash> <slash> 		: "╱"   U2717 # Box drawings light diagonal upper right to lower left
 <Multi_key> <backslash> <backslash> 	: "╲"   U2717 # Box drawings light diagonal upper left to lower right
 
+<Multi_key> <grave> <grave> <space> : "́" # Combining acute
+<Multi_key> <Cyrillic_ie> <Cyrillic_ie> <space>         : "́" # Combining acute
+
+<Multi_key> <j> <1> 			: "１"   UFF11 # Fullwidth Digit One
+<Multi_key> <j> <2> 			: "２"   UFF12 # Fullwidth Digit Two
+<Multi_key> <j> <3> 			: "３"   UFF13 # Fullwidth Digit Three
+<Multi_key> <j> <4> 			: "４"   UFF14 # Fullwidth Digit Four
+<Multi_key> <j> <5> 			: "５"   UFF15 # Fullwidth Digit Five
+<Multi_key> <j> <6> 			: "６"   UFF16 # Fullwidth Digit Six
+<Multi_key> <j> <7> 			: "７"   UFF17 # Fullwidth Digit Seven
+<Multi_key> <j> <8> 			: "８"   UFF18 # Fullwidth Digit Eight
+<Multi_key> <j> <9> 			: "９"   UFF19 # Fullwidth Digit Nine
+<Multi_key> <j> <0> 			: "０"   UFF10 # Fullwidth Digit Ten
