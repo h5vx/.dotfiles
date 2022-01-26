@@ -35,7 +35,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -67,6 +66,14 @@
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 )
 
+;; Tabs style: {alternate, bar, box, chamfer, rounded, slant, wave, zigzag}
+(after! centaur-tabs
+  (setq centaur-tabs-style "wave")
+  (setq centaur-tabs-set-bar nil)  ; {left, over, under}
+  (centaur-tabs-headline-match)
+  (centaur-tabs-group-by-projectile-project)
+)
+
 (with-eval-after-load 'treemacs
   (defun treemacs-ignore-gitignore (file _)
     (string= file ".gitignore"))
@@ -79,6 +86,11 @@
               (require 'lsp-python-ms)
               (lsp)))) ; or lsp-deferred
 
+(setq mmm-submode-decoration-level 0)
+
+(add-hook 'mmm-mode-hook
+          (lambda ()
+            (set-face-background 'mmm-default-submode-face nil)))
 
 (map! :n "J" 'centaur-tabs-forward
       :n "K" 'centaur-tabs-backward
@@ -87,6 +99,7 @@
       :n "H" 'evil-jump-backward
       :n "C-}" 'lsp-extend-selection
       :n "C-J" 'join-line
+      :i :mode 'vterm-mode "C-j" 'vterm-send-C-j
       :leader :desc "Push" :n "gk" 'magit-push-to-remote
       :leader :desc "Pull" :n "gp" 'magit-pull-from-upstream
       )
