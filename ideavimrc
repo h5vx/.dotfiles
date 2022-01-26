@@ -43,8 +43,6 @@
 :vnoremap <A-j> :action MoveLineDown<CR>
 :vnoremap <A-k> :action MoveLineUp<CR>
 
-:inoremap kj <Esc>
-
 " Next/Prev token with screen centering
 :nnoremap * *zz
 :nnoremap # #zz
