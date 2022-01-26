@@ -1,4 +1,40 @@
 [credential]
-	helper = cache
+    helper = cache
+
 [color]
-	ui = true
+    ui = true
+
+[commit]
+    gpgSign = true
+
+[github]
+    user = h5vx
+
+[include]
+    path = ~/.gitconfig.private
+
+[core]
+    autocrlf = input
+    editor = nvim
+    pager = delta
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[gpg]
+    program = gpg2
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
