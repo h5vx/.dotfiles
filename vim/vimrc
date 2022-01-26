@@ -9,19 +9,28 @@ set encoding=UTF-8
 :set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
 inoremap <C-ц> <C-w>
 
+set nohidden
+
 " Custom filetypes
 au BufRead,BufNewFile *.ron  set filetype=rust
 au BufRead,BufNewFile *.ejs  set filetype=javascript
+au BufRead,BufNewFile *.coffee set filetype=javascript
 
 " =========================[      Plugins     ]=========================
 call plug#begin('~/.vim/plugged')
 
+" TODO: Just use tab titles from airline
+Plug 'MikeDacre/tmux-zsh-vim-titles'
+
+" Edit with sudo
 Plug 'lambdalisue/suda.vim'
 let g:suda_smart_edit = 1
 
 Plug 'jeetsukumaran/vim-buffergator'
 
 Plug 'wincent/terminus'
+
+Plug 'gpanders/editorconfig.nvim'
 
 Plug 'voldikss/vim-floaterm'
 " let g:floaterm_wintype = "split"
@@ -31,6 +40,9 @@ let g:floaterm_height = 0.4
 let g:floaterm_width = 1.0
 let g:floaterm_borderchars = "─│─│╭╮╯╰"
 let g:floaterm_keymap_toggle = '<A-t>'
+let g:floaterm_keymap_new    = '<F7>'
+let g:floaterm_keymap_prev   = '<F8>'
+let g:floaterm_keymap_next   = '<F9>'
 
 " Not working :(
 highlight FloatermBorder guibg=#000000 ctermbg=black
@@ -48,6 +60,8 @@ let g:gitgutter_sign_modified = ''
 let g:gitgutter_sign_removed = ''
 let g:gitgutter_sign_modified_removed = ''
 
+Plug 'Shougo/denite.nvim'
+Plug 'Shougo/neoyank.vim'
 
 Plug 'tpope/vim-fugitive'
 
@@ -65,10 +79,12 @@ let g:fern#renderer = "nerdfont"
 let g:fern#default_exclude = '^\%(__pycache__\|.*\.pyc\)$'
 let g:fern#hide_cursor = 1
 
-nnoremap <A-1> <cmd>Fern -drawer . -reveal=%s -toggle<CR>
+nnoremap <A-1> <cmd>Fern -drawer . -reveal=% -toggle<CR>
+" nnoremap <Return> :
 
 " Python support
 Plug 'davidhalter/jedi-vim'
+
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 
 Plug 'mgedmin/python-imports.vim'
@@ -76,15 +92,49 @@ map gi :ImportName<CR>
 
 Plug 'vim-syntastic/syntastic'
 Plug 'fisadev/vim-isort'
+let g:vim_isort_python_version = 'python3'
+nnoremap <C-S-I> <cmd>Isort<CR>
 
 Plug 'psf/black', { 'branch': 'stable' }
 let g:black_quiet = 1
+let g:black_linelength = 120
+
+Plug 'petobens/poet-v'
+
+"Plug 'wellle/context.vim'
+"let g:context_enabled = 1
+
+Plug 'puremourning/vimspector'
+let g:vimspector_install_gadgets = [ 'debugpy' ]
+let g:vimspector_enable_mappings = 'HUMAN'
+
+" JS
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'ternjs/tern_for_vim'
+" Plug 'carlitux/deoplete-ternjs'
+" let g:deoplete#enable_at_startup = 0
+"
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+Plug 'posva/vim-vue'
+
+" COC
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+
+" Snippets
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " Go
 Plug 'fatih/vim-go'
 
 " PHP
-Plug 'vim-vdebug/vdebug'
+" Plug 'vim-vdebug/vdebug'
 
 Plug 'jmcantrell/vim-virtualenv'
 
@@ -96,6 +146,9 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 " Crystal lang support
 Plug 'vim-crystal/vim-crystal'
+
+" Ansible
+Plug 'pearofducks/ansible-vim'
 
 " Colorschemes
 Plug 'gruvbox-community/gruvbox'
@@ -118,6 +171,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'SmiteshP/nvim-gps'
 Plug 'nvim-telescope/telescope-project.nvim'
 
 Plug 'dominikduda/vim_current_word'
@@ -127,6 +181,7 @@ let g:vim_current_word#highlight_only_in_focused_window = 1
 function! s:init_fern() abort
   let b:vim_current_word_disabled_in_this_buffer = 1
   set nonumber
+  nmap <buffer> D <Plug>(fern-action-remove)
 endfunction
 
 augroup my-fern
@@ -135,11 +190,15 @@ augroup my-fern
 augroup END
 
 Plug 'ryanoasis/vim-devicons'
+Plug 'kyazdani42/nvim-web-devicons'
 
 Plug 'easymotion/vim-easymotion'
 map <Bslash> <Plug>(easymotion-prefix)
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+
+Plug 'mattn/emmet-vim'
+imap <C-j> <plug>(emmet-expand-abbr)
 
 call plug#end()
 " ----------------------------------------------------------------------
@@ -216,7 +275,7 @@ nnoremap <C-s> :w<CR>
 
 inoremap <C-a> <Home>
 inoremap <C-e> <End>
-inoremap <C-j> <Down>
+" inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-l> <Up>
 inoremap <A-f> <C-right>
@@ -250,7 +309,7 @@ set list
 set listchars=tab:→\ ,trail:·,nbsp:⎵
 
 " Reduce update latency, default is 4000
-set updatetime=100
+set updatetime=1000
 
 set splitright
 
@@ -270,6 +329,21 @@ endfunction
 
 nnoremap <Leader>dh :call DiffGet("1h")<CR>
 nnoremap <Leader>dl :call DiffGet("1l")<CR>
+
+function! NvimGps()
+    return luaeval("require('nvim-gps').get_location()")
+endfunction
+
+function! NvimGpsAvailable()
+    return luaeval("require('nvim-gps').is_available()")
+endfunction
+
+command StripLines :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>
+
+call airline#parts#define_function('bc', 'NvimGps')
+call airline#parts#define_minwidth('bc', 50)
+call airline#parts#define_condition('bc', 'NvimGpsAvailable()')
+let g:airline_section_y = airline#section#create_right(['ffenc','bc'])
 
 " =========================[     Terminal     ]=========================
 augroup neovim_terminal
@@ -301,9 +375,10 @@ let g:gruvbox_material_palette = 'mix'
 set bg=dark
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'violet'
+"let g:airline_theme = 'violet'
+let g:airline_theme = 'gruvbox_material'
 
-colorscheme embark
+colorscheme gruvbox-material
 
 " =========================[    GUI Config    ]=========================
 set termguicolors
@@ -340,6 +415,8 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+require("nvim-gps").setup()
 
 require('telescope').setup{
     defaults = {
