@@ -19,6 +19,21 @@ au BufRead,BufNewFile *.coffee set filetype=javascript
 " =========================[      Plugins     ]=========================
 call plug#begin('~/.vim/plugged')
 
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+" Calculate expressions (<leader><leader>?)
+Plug 'sk1418/HowMuch'
+
+" ActionScript support
+Plug 'jeroenbourgois/vim-actionscript'
+
+" Convert to hex/oct/bin (crx / crd / cro / crb)
+Plug 'glts/vim-magnum'
+Plug 'glts/vim-radical'
+
 " TODO: Just use tab titles from airline
 Plug 'MikeDacre/tmux-zsh-vim-titles'
 
@@ -295,10 +310,15 @@ nnoremap <leader>s <cmd>Telescope project<CR>
 nnoremap <leader><C-n> <cmd>Tags<CR>
 nnoremap gf <cmd>execute("Tags " . expand('<cword>'))<CR>
 
+" Git
 nnoremap <Leader>G <cmd>G<CR>
 nnoremap <Leader>Gb <cmd>Telescope git_branches<CR>
 nnoremap <Leader>Gp <cmd>G pull<CR>
 nnoremap <Leader>Gk <cmd>G push<CR>
+
+" Url decode/encode
+vnoremap <leader>en :!python3 -c 'import sys; from urllib import parse; print(parse.quote_plus(sys.stdin.read().strip()))'<cr>
+vnoremap <leader>de :!python3 -c 'import sys; from urllib import parse; print(parse.unquote_plus(sys.stdin.read().strip()))'<cr>
 
 " Disable GUI menus
 let did_install_default_menus = 1
@@ -327,8 +347,8 @@ function! DiffGet(direction)
     exe "diffget " . bufnr
 endfunction
 
-nnoremap <Leader>dh :call DiffGet("1h")<CR>
-nnoremap <Leader>dl :call DiffGet("1l")<CR>
+"nnoremap <Leader>dh :call DiffGet("1h")<CR>
+"nnoremap <Leader>dl :call DiffGet("1l")<CR>
 
 function! NvimGps()
     return luaeval("require('nvim-gps').get_location()")
