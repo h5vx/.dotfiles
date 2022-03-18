@@ -228,7 +228,7 @@ root.buttons(my_table.join(
 globalkeys = my_table.join(
     -- Take a screenshot
     awful.key({ }, "Print", function() 
-        awful.spawn.with_shell("mkdir -p ~/Pictures/Screenshots; flameshot gui -p ~/Pictures/Screenshots") 
+        awful.spawn.with_shell("mkdir -p ~/Pictures/Screenshots; flameshot gui") 
     end, {description = "take a screenshot", group = "hotkeys"}),
 
     awful.key({ modkey }, "Print", function() awful.spawn("flameshot launcher") end,

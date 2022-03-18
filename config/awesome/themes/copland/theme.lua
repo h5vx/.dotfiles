@@ -17,7 +17,7 @@ local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/copland"
 theme.wallpaper                                 = { theme.dir .. "/wall.png", theme.dir .. "/wall2.png" }
 -- theme.font                                      = "Fura Code 11"
-theme.size_multiplier				= 1.33
+theme.size_multiplier                           = 1.33
 theme.font                                      = "Varela Round 11"
 theme.widget_font                               = "FuraCode Nerd Font 10"
 theme.fg_normal                                 = "#BBBBBB"
@@ -37,7 +37,8 @@ theme.titlebar_bg_focus                         = "#262626"
 theme.menu_height                               = 16
 theme.menu_width                                = 130
 theme.tasklist_disable_icon                     = true
-theme.awesome_icon                              = theme.dir .."/icons/awesome.png"
+theme.widget_temp                               = theme.dir .. "/icons/temp.png"
+theme.awesome_icon                              = theme.dir .. "/icons/awesome.png"
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
 theme.taglist_squares_sel                       = theme.dir .. "/icons/square_unsel.png"
 theme.taglist_squares_unsel                     = theme.dir .. "/icons/square_unsel.png"
@@ -320,6 +321,15 @@ theme.weather = lain.widget.weather({
     end
 })
 
+-- Coretemp
+local tempicon = wibox.widget.imagebox(theme.widget_temp)
+local temp = lain.widget.temp({
+    timeout = 5,
+    settings = function()
+        widget:set_markup(markup.fontfg(theme.widget_font, "#f1af5f", coretemp_now .. "°C "))
+    end
+})
+
 -- Separators
 local first     = wibox.widget.textbox(markup.font("Misc Tamsyn 3", " "))
 local spr       = wibox.widget.textbox(' ')
@@ -394,13 +404,15 @@ function theme.at_screen_connect(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            small_spr,
+            spr,
+            bar_spr,
             --theme.mail.widget,
             mpdicon,
             theme.mpd.widget,
-            -- bar_spr,
             -- theme.weather.icon,
             -- theme.weather.widget,
+            tempicon,
+            temp.widget,
             memicon,
             memory,
             swap_label,
