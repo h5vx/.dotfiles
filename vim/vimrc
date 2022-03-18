@@ -97,6 +97,9 @@ let g:fern#hide_cursor = 1
 nnoremap <A-1> <cmd>Fern -drawer . -reveal=% -toggle<CR>
 " nnoremap <Return> :
 
+" Nix support
+Plug 'LnL7/vim-nix'
+
 " Python support
 Plug 'davidhalter/jedi-vim'
 
@@ -136,7 +139,6 @@ Plug 'posva/vim-vue'
 
 " COC
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 
 " Snippets
 Plug 'Shougo/neosnippet.vim'
