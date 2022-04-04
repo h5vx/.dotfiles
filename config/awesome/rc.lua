@@ -81,6 +81,7 @@ local gui_editor   = "subl3"
 local browser      = "chromium"
 local scrlocker    = "~/.local/bin/lock"
 local mylauncher   = "~/.local/bin/h5v-launcher"
+local mysymbolchooser = "~/.local/bin/symbol-chooser"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "🌎", "📟", "📝", "🌀", "📕", "🐙" }
@@ -238,7 +239,7 @@ globalkeys = my_table.join(
         awful.spawn.with_shell([[
             mkdir -p ~/Pictures/Screenshots
             wclass=$(xdotool getactivewindow getwindowclassname)
-            scrot -u "$HOME/Pictures/Screenshots/${wclass}_%Y-%m-%d_%H-%M.png"
+            scrot -u "$HOME/Pictures/Screenshots/${wclass}_%Y-%m-%d_%H-%M.png" -e "notify-send Screenshot 'Saved at \$f'"
         ]])
     end, {description = "Screenshot active window", group = "hotkeys"}),
 
@@ -456,6 +457,11 @@ globalkeys = my_table.join(
             beautiful.volume.update()
         end,
         {description = "-3%", group = "hotkeys"}),
+    awful.key({ }, "XF86AudioMicMute",
+        function ()
+            awful.spawn("thinkpad-mutemic")
+        end,
+        {description = "toggle mute", group = "hotkeys"}),
     awful.key({ }, "XF86AudioMute",
         function ()
             awful.spawn("pamixer -t")
@@ -610,6 +616,10 @@ globalkeys = my_table.join(
       {description = "switch windows", group = "launcher"}), 
     awful.key({ modkey }, "u", function () awful.spawn('rofimoji') end,
       {description = "switch windows", group = "launcher"}),
+    awful.key({ modkey }, "i", function () awful.spawn.with_shell(mysymbolchooser) end,
+      {description = "symbol chooser", group = "launcher"}),
+    awful.key({ modkey }, "x", function () awful.spawn.with_shell(mylauncher) end,
+      {description = "custom launcher", group = "launcher"}),
     --]]
 
 --     awful.key({ modkey }, "x",
@@ -623,8 +633,6 @@ globalkeys = my_table.join(
 --               end,
 --               {description = "lua execute prompt", group = "awesome"}),
     --]]
-    awful.key({ modkey }, "x", function () awful.spawn.with_shell(mylauncher) end,
-      {description = "custom launcher", group = "launcher"}),
 
     --[-[ Window transparency control (needs transset-df)
         awful.key({ modkey, "Control" }, "-", function () awful.spawn('transset-df -a --dec 0.1') end,
