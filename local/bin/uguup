@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+import sys
+
+import requests
+
+
+def human_size(size_bytes):
+    units = "bytes", "Kb", "Mb", "Gb", "Tb"
+    unit_index = 0
+
+    while size_bytes >= 1024:
+        if unit_index + 1 >= len(units):
+            break
+
+        size_bytes /= 1024
+        unit_index += 1
+
+    unit = units[unit_index]
+    return "{size:g} {unit}".format(size=size_bytes, unit=unit)
+
+
+def upload_file(path):
+    r = requests.post("https://uguu.se/upload.php", files=[
+        ("files[]", open(path, "rb"))
+    ])
+    response = r.json()
+
+    if not response.get("success"):
+        raise RuntimeError(f"Can't upload file:\n{response}")
+
+    info = response["files"][0]
+    return info["url"], info["name"], info["size"]
+
+
+if __name__ == "__main__":
+    for file in sys.argv[1:]:
+        url, name, size = upload_file(file)
+        size_human = human_size(int(size))
+        print(f"{url} - {name} ({size_human})")
