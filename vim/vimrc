@@ -51,7 +51,7 @@ Plug 'voldikss/vim-floaterm'
 " let g:floaterm_wintype = "split"
 let g:floaterm_title = "   $1 / $2 "
 let g:floaterm_position = "bottom"
-let g:floaterm_height = 0.4
+let g:floaterm_height = 0.7
 let g:floaterm_width = 1.0
 let g:floaterm_borderchars = "─│─│╭╮╯╰"
 let g:floaterm_keymap_toggle = '<A-t>'
@@ -209,6 +209,8 @@ augroup END
 Plug 'ryanoasis/vim-devicons'
 Plug 'kyazdani42/nvim-web-devicons'
 
+Plug 'moll/vim-bbye'
+
 Plug 'easymotion/vim-easymotion'
 map <Bslash> <Plug>(easymotion-prefix)
 
@@ -280,7 +282,7 @@ nnoremap L <C-I>
 
 set noequalalways  " Don't resize windows after closing split
 nnoremap <Leader>w <C-W>
-nnoremap Q :q<CR>
+nnoremap Q :Bdelete<CR>
 
 " Copy/Paste to system clipboard
 nnoremap <Leader>y "+y
@@ -349,8 +351,8 @@ function! DiffGet(direction)
     exe "diffget " . bufnr
 endfunction
 
-"nnoremap <Leader>dh :call DiffGet("1h")<CR>
-"nnoremap <Leader>dl :call DiffGet("1l")<CR>
+nnoremap <Leader>d> :call DiffGet("1h")<CR>
+nnoremap <Leader>d< :call DiffGet("1l")<CR>
 
 function! NvimGps()
     return luaeval("require('nvim-gps').get_location()")
