@@ -22,6 +22,7 @@ MY_PATH=$(dirname "$0")
 
 copyconf vconsole.conf
 copyconf ruwin_alt_sh_caps2ctrl-UTF-8.map.gz "/usr/share/kbd/keymaps/i386/qwerty/"
+copyconf sudoers.d
 
 ask "Do you use keychron keyboard?" &&
     copyconf modprobe.d/keychron.conf
