@@ -33,5 +33,6 @@ ask "Do you use ntfs3 module?" &&
     copyconf modules-load.d/ntfs3.conf &&
     copyconf udev/rules.d/80-ntfs3.rules
 ask "Do you use ddcutil (to adjust screen brightness)?" &&
+    copyconf modules-load.d/i2c.conf &&
     copyconf udev/rules.d/45-ddcutil-i2c.rules
 
