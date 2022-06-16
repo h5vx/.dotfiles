@@ -18,11 +18,12 @@ function copyconf() {
     fi
 }
 
-MY_PATH=$(dirname "$0")
+SCRIPT=$(readlink -f $0)
+MY_PATH=$(dirname "$SCRIPT")
 
 copyconf vconsole.conf
 copyconf ruwin_alt_sh_caps2ctrl-UTF-8.map.gz "/usr/share/kbd/keymaps/i386/qwerty/"
-copyconf sudoers.d
+copyconf sudoers.d/
 
 ask "Do you use keychron keyboard?" &&
     copyconf modprobe.d/keychron.conf
@@ -37,3 +38,5 @@ ask "Do you use ddcutil (to adjust screen brightness)?" &&
     copyconf modules-load.d/i2c.conf &&
     copyconf udev/rules.d/45-ddcutil-i2c.rules
 
+echo "Now you probably should run:"
+echo "sudo mkinitcpio -p linux"
