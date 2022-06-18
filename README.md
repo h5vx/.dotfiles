@@ -19,6 +19,7 @@ proxychains
 imagemagick
 rofi
 ripgrep
+fd
 cantarell-fonts
 ttf-joypixels
 ttf-roboto
@@ -50,11 +51,21 @@ mate-polkit
 xxkb
 pavucontrol
 mpv
+mpv-mpris
 cmus
 youtube-dl
 docker
+docker-compose
 lxappearance
 papirus-icon-theme
+xdotool
+xsel
+glow
+rofimoji
+pamixer
+mpris
+playerctl
+bluez-utils
 ```
 
 ### 2. Install yay
@@ -82,6 +93,7 @@ pipe-viewer-git
 xcursor-human
 materia-gtk-theme
 nfs-utils
+rofi-file-browser-extended-git
 ```
 
 ## 2. Clone and apply dotfiles
@@ -100,6 +112,16 @@ rcup
 usermod -aG docker h5v
 usermod -aG i2c h5v
 ```
+
+### Makepkg
+* In `/etc/makepkg.conf`
+```
+MAKEFLAGS="-j8"
+CFLAGS="-march=native # ...
+RUSTFLAGS="-C opt-level=2 -C target-cpu=native"
+BUILDDIR=/tmp/makepkg
+```
+
 
 ## Neovim configuration
 * In neovim run `:PlugInstall`
