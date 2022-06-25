@@ -60,12 +60,16 @@ lxappearance
 papirus-icon-theme
 xdotool
 xsel
+xclip
 glow
 rofimoji
 pamixer
 mpris
 playerctl
 bluez-utils
+httpie
+zathura
+zathura-pdf-mupdf
 ```
 
 ### 2. Install yay
@@ -94,6 +98,7 @@ xcursor-human
 materia-gtk-theme
 nfs-utils
 rofi-file-browser-extended-git
+cmusfm
 ```
 
 ## 2. Clone and apply dotfiles
@@ -153,7 +158,7 @@ find . -type f | grep -v temp.png | xargs -I {} ./colorize.sh {}
 # Download varela round, as there is no package for it
 mkdir -p ~/.local/share/fonts
 cd ~/.local/share/fonts
-wget https://fonts.google.com/download?family=Varela%20Round -O VarelaRound.zip
+wget 'https://fonts.google.com/download?family=Varela%20Round -O VarelaRound.zip'
 unzip VarelaRound.zip
 fc-cache -f -v
 rm OFL.txt VarelaRound.zip
@@ -232,3 +237,7 @@ Change your /etc/pam.d/system-auth as follows
 +
  session    optional                    pam_permit.so
 ```
+
+## cmufm
+* `cmusfm init`
+* in cmus: `:set status_display_program=cmusfm`
