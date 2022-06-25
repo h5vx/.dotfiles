@@ -70,6 +70,7 @@ bluez-utils
 httpie
 zathura
 zathura-pdf-mupdf
+sxiv
 ```
 
 ### 2. Install yay
