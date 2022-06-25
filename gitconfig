@@ -39,3 +39,5 @@
 
 [diff]
     colorMoved = default
+[url "https://"]
+	insteadOf = git://

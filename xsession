@@ -2,7 +2,7 @@
 
 case "${DESKTOP_SESSION-}" in
 	awesome|dwm)
-        wired -r &
+        #wired -r &
 		/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 		picom -b
 		#xss-lock -- ~/.local/bin/lock &

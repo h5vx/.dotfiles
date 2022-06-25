@@ -1,6 +1,7 @@
 export TERMINAL=kitty
 export EDITOR=nvim
 export WORKON_HOME=~/.venv
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
 
 # "less" pager configuration
 # -i for case-insensitive search
