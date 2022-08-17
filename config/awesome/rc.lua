@@ -41,6 +41,9 @@ do
 end
 -- }}}
 
+-- HACK to replace default notification daemon
+dbus.release_name("session", "org.freedesktop.Notifications")
+
 local function center_client(c)
 	local wa = awful.screen.focused().workarea
 	c.x = wa.x + (wa.width - c.width) / 2
@@ -228,14 +231,14 @@ root.buttons(my_table.join(
 -- {{{ Key bindings
 globalkeys = my_table.join(
     -- Take a screenshot
-    awful.key({ }, "Print", function() 
-        awful.spawn.with_shell("mkdir -p ~/Pictures/Screenshots; flameshot gui") 
+    awful.key({ }, "Print", function()
+        awful.spawn.with_shell("mkdir -p ~/Pictures/Screenshots; flameshot gui")
     end, {description = "take a screenshot", group = "hotkeys"}),
 
     awful.key({ modkey }, "Print", function() awful.spawn("flameshot launcher") end,
               {description = "take a screenshot (with options)", group = "hotkeys"}),
 
-    awful.key({ "Shift" }, "Print", function() 
+    awful.key({ "Shift" }, "Print", function()
         awful.spawn.with_shell([[
             mkdir -p ~/Pictures/Screenshots
             wclass=$(xdotool getactivewindow getwindowclassname)
@@ -414,14 +417,21 @@ globalkeys = my_table.join(
               {description = "show weather", group = "widgets"}),
     --]]
     -- Brightness
-    awful.key({ }, "XF86MonBrightnessUp", function () 
-        awful.spawn("xbacklight -inc 10") 
-        awful.spawn("ddcutil setvcp 10 + 10 --force-slave-address") 
+    awful.key({ }, "XF86MonBrightnessUp", function ()
+        awful.spawn("xbacklight -inc 10")
+        awful.spawn.easy_async_with_shell([[
+            ddcutil setvcp 10 + 10 --force-slave-address && \
+            notify-send -r 1 "Brightness" "🔆 $(ddcutil --brief getvcp 10 | cut -d ' ' -f4)%"
+        ]], function () end)
+
     end,
               {description = "+10%", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessDown", function () 
-        awful.spawn("xbacklight -dec 10") 
-        awful.spawn("ddcutil setvcp 10 - 10 --force-slave-address") 
+    awful.key({ }, "XF86MonBrightnessDown", function ()
+        awful.spawn("xbacklight -dec 10")
+        awful.spawn.easy_async_with_shell([[
+            ddcutil setvcp 10 - 10 --force-slave-address && \
+            notify-send -r 1 "Brightness" "🔆 $(ddcutil --brief getvcp 10 | cut -d ' ' -f4)%"
+        ]], function () end)
     end,
               {description = "-10%", group = "hotkeys"}),
 
@@ -592,7 +602,7 @@ globalkeys = my_table.join(
       {description = "file browser", group = "launcher"}),
 
     -- Default
-    --[[ Menubar 
+    --[[ Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
     --]]
@@ -613,7 +623,7 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "p", function () awful.spawn('rofi -show drun -show-icons') end,
       {description = "launch application", group = "launcher"}),
     awful.key({ modkey }, "w", function () awful.spawn('rofi -show window') end,
-      {description = "switch windows", group = "launcher"}), 
+      {description = "switch windows", group = "launcher"}),
     awful.key({ modkey }, "u", function () awful.spawn('rofimoji') end,
       {description = "switch windows", group = "launcher"}),
     awful.key({ modkey }, "i", function () awful.spawn.with_shell(mysymbolchooser) end,
