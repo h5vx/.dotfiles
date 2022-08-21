@@ -24,11 +24,21 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'neovim/nvim-lspconfig'
+
 " Calculate expressions (<leader><leader>?)
 Plug 'sk1418/HowMuch'
 
 " ActionScript support
 Plug 'jeroenbourgois/vim-actionscript'
+
+" Helm support
+Plug 'towolf/vim-helm'
+
+" Terraform support
+Plug 'hashivim/vim-terraform'
 
 " Convert to hex/oct/bin (crx / crd / cro / crb)
 Plug 'glts/vim-magnum'
@@ -188,8 +198,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'SmiteshP/nvim-gps'
 Plug 'nvim-telescope/telescope-project.nvim'
+Plug 'SmiteshP/nvim-navic'
 
 Plug 'dominikduda/vim_current_word'
 let g:vim_current_word#highlight_current_word = 1
@@ -354,20 +364,10 @@ endfunction
 nnoremap <Leader>d> :call DiffGet("1h")<CR>
 nnoremap <Leader>d< :call DiffGet("1l")<CR>
 
-function! NvimGps()
-    return luaeval("require('nvim-gps').get_location()")
-endfunction
-
-function! NvimGpsAvailable()
-    return luaeval("require('nvim-gps').is_available()")
-endfunction
-
 command StripLines :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>
 
-call airline#parts#define_function('bc', 'NvimGps')
-call airline#parts#define_minwidth('bc', 50)
-call airline#parts#define_condition('bc', 'NvimGpsAvailable()')
-let g:airline_section_y = airline#section#create_right(['ffenc','bc'])
+" call airline#parts#define_minwidth('bc', 50)
+" let g:airline_section_y = airline#section#create_right(['ffenc','bc'])
 
 " =========================[     Terminal     ]=========================
 augroup neovim_terminal
@@ -440,8 +440,6 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
-require("nvim-gps").setup()
-
 require('telescope').setup{
     defaults = {
     -- Default configuration for telescope goes here:
@@ -475,4 +473,25 @@ require('telescope').setup{
     }
 }
 require'telescope'.load_extension('project')
+
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = { "yaml-language-server" }
+})
+
+local navic = require("nvim-navic")
+local lspconfig = require("lspconfig")
+
+lspconfig.yamlls.setup {
+    on_attach = function(client, bufnr)
+        navic.attach(client, bufnr)
+    end
+}
+
+lspconfig.gopls.setup {
+    on_attach = function(client, bufnr)
+        navic.attach(client, bufnr)
+    end
+}
+
 EOF
