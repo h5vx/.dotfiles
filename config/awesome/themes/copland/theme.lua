@@ -19,7 +19,7 @@ theme.wallpaper                                 = { theme.dir .. "/wall.png", th
 -- theme.font                                      = "Fura Code 11"
 theme.size_multiplier                           = 1.33
 theme.font                                      = "Varela Round 11"
-theme.widget_font                               = "FuraCode Nerd Font 10"
+theme.widget_font                               = "Jetbrains Mono 10"
 theme.fg_normal                                 = "#BBBBBB"
 theme.fg_focus                                  = "#C708C4"
 theme.bg_normal                                 = "#0C0E15"
@@ -250,12 +250,12 @@ local fsbar = wibox.widget {
 theme.fs = lain.widget.fs {
     notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = theme.widget_font },
     settings  = function()
-        if fs_now["/home"].percentage < 90 then
+        if fs_now["/"].percentage < 90 then
             fsbar:set_color(theme.fg_normal)
         else
             fsbar:set_color("#EB8F8F")
         end
-        fsbar:set_value(fs_now["/home"].percentage / 100)
+        fsbar:set_value(fs_now["/"].percentage / 100)
     end
 }
 local fsbg = wibox.container.background(fsbar, "#474747", gears.shape.rectangle)

@@ -25,6 +25,8 @@ ttf-joypixels
 ttf-roboto
 ttf-dejavu
 ttf-jetbrains-mono
+ttf-jetbrains-mono-nerd
+ttf-firacode-nerd
 kitty
 tig
 rsync
@@ -85,14 +87,12 @@ makepkg -si
 rcm
 lain-git
 awesome-freedesktop-git
-nerd-fonts-jetbrains-mono
 i3lock-fancy-rapid-git
 ntfs3-dkms
 neovim-plug
 neovim-symlinks
 zgen-git
 spaceship-prompt-git
-nerd-fonts-fira-code
 wired
 pipe-viewer-git
 xcursor-human
