@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-
+import os
 import requests
 
 
@@ -33,6 +33,10 @@ def upload_file(path):
 
 
 if __name__ == "__main__":
+    # Ensure there is DISPLAY env variable for xclip
+    if not os.environ.get("DISPLAY"):
+        os.environ["DISPLAY"] = ":0"
+
     for file in sys.argv[1:]:
         url, name, size = upload_file(file)
         size_human = human_size(int(size))
